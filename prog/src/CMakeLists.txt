@@ -3,8 +3,8 @@ project(lab_01_AA)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(HEADERS  table.hpp)
-set(SOURCES   table.cpp)
+set(HEADERS  table.hpp timings.h)
+set(SOURCES   table.cpp timings.cpp)
 
 
 ADD_LIBRARY(src ${HEADERS} ${SOURCES})

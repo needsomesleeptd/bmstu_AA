@@ -5,8 +5,8 @@
 #include "../../src/table.hpp"
 
 TEST(LenTest, EQLENTEST) {
-	std::string st1 = "wwwwwwc";
-	std::string st2 = "bbbbbbc";
+	std::wstring st1 = L"wwwwwwc";
+	std::wstring st2 = L"bbbbbbc";
 	Matrix mat(st1.size(),st2.size());
 
 	int DamerauLen = 6;
@@ -26,8 +26,8 @@ TEST(LenTest, EQLENTEST) {
 
 
 TEST(LenTest, DIFLENTEST) {
-	std::string st1 = "AB";
-	std::string st2 = "BA";
+	std::wstring st1 = L"AB";
+	std::wstring st2 = L"BA";
 	Matrix mat(st1.size(),st2.size());
 
 	int DamerauLen = 1;
@@ -48,12 +48,53 @@ TEST(LenTest, DIFLENTEST) {
 
 
 TEST(LenTest, LongWords) {
-	std::string st1 = "AKKAKKAKAKAAKBBABAK";
-	std::string st2 = "AKAKVVKAKAKAKABABKA";
+	std::wstring st1 = L"KAKAKAKABABKA";
+	std::wstring st2 = L"AKAAKBBABAK";
 	Matrix mat(st1.size(),st2.size());
 
-	int DamerauLen = 7;
-	int LevLen  = 6;
+	int DamerauLen = 4;
+	int LevLen  = 5;
+
+	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
+	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
+	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+
+	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+
+	ASSERT_EQ(DamerauLen,lenMatDamerau);
+	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
+	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
+	ASSERT_EQ(LevLen,lenMatLev);
+}
+
+
+TEST(LenTest, English) {
+	std::wstring st1 = L"BCA";
+	std::wstring st2 = L"ABC";
+	Matrix mat(st1.size(),st2.size());
+
+	int DamerauLen = 2;
+	int LevLen  = 2;
+
+	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
+	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
+	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+
+	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+
+	ASSERT_EQ(DamerauLen,lenMatDamerau);
+	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
+	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
+	ASSERT_EQ(LevLen,lenMatLev);
+}
+
+TEST(LenTest, Russian) {
+	std::wstring st1 = L"ВФА";
+	std::wstring st2 = L"АВФ";
+	Matrix mat(st1.size(),st2.size());
+
+	int DamerauLen = 2;
+	int LevLen  = 2;
 
 	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
 	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);

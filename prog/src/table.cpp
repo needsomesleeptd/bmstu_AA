@@ -13,7 +13,7 @@ Matrix::Matrix(int n, int m)
 	_m = m + 1;
 
 }
-int Matrix::findMatrixDistDamerau(const std::string& st1, const std::string& st2)
+int Matrix::findMatrixDistDamerau(const std::wstring& st1, const std::wstring& st2)
 {
 	int n = st1.size() + 1;
 	int m = st2.size() + 1;
@@ -38,14 +38,14 @@ int Matrix::findMatrixDistDamerau(const std::string& st1, const std::string& st2
 			if (i > 1 && j > 1)
 			{
 				if (st1[i - 1] == st2[j - 2] && st1[i - 2] == st2[j - 1])
-					_table[i][j] = std::min(_table[i][j], _table[i - 2][j - 2]) + 1;
+					_table[i][j] = std::min(_table[i][j], _table[i - 2][j - 2] + 1);
 			}
 		}
 	}
 	return _table[n - 1][m - 1];
 }
 
-int Matrix::findMatrixDistLev(const std::string& st1, const std::string& st2)
+int Matrix::findMatrixDistLev(const std::wstring& st1, const std::wstring& st2)
 {
 	int n = st1.size() + 1;
 	int m = st2.size() + 1;
@@ -83,7 +83,7 @@ void Matrix::printMatrix()
 	}
 }
 
-size_t RecurseDistDamerau(const std::string& st1, const std::string& st2, int lastIndex1, int lastIndex2)
+size_t RecurseDistDamerau(const std::wstring& st1, const std::wstring& st2, int lastIndex1, int lastIndex2)
 {
 	if (lastIndex1 == 0)
 		return lastIndex2;
@@ -107,8 +107,8 @@ size_t RecurseDistDamerau(const std::string& st1, const std::string& st2, int la
 	return chosenOne;
 }
 
-int RecurseDistMemDamerau(const std::string& st1,
-	const std::string& st2,
+int RecurseDistMemDamerau(const std::wstring& st1,
+	const std::wstring& st2,
 	int lastIndex1,
 	int lastIndex2,
 	Matrix& mat)
@@ -147,7 +147,7 @@ int RecurseDistMemDamerau(const std::string& st1,
 	return chosenOne;
 }
 
-size_t Matrix::findRecurseDistMemDamerau(const std::string& st1, const std::string& st2)
+size_t Matrix::findRecurseDistMemDamerau(const std::wstring& st1, const std::wstring& st2)
 {
 	for (int i = 0; i < _n; i++)
 		for (int j = 0; j < _m; j++)
@@ -156,7 +156,7 @@ size_t Matrix::findRecurseDistMemDamerau(const std::string& st1, const std::stri
 	return RecurseDistMemDamerau(st1, st2, st1.size(), st2.size(), *this);
 }
 
-size_t Matrix::findRecurseDistDamerau(const std::string& st1, const std::string& st2)
+size_t Matrix::findRecurseDistDamerau(const std::wstring& st1, const std::wstring& st2)
 {
 	return RecurseDistDamerau(st1, st2, st1.size(), st2.size());
 }
