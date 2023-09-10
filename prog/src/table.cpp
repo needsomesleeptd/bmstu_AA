@@ -63,7 +63,7 @@ int Matrix::findMatrixDistLev(const std::string& st1, const std::string& st2)
 
 			_table[i][j] = std::min(_table[i][j - 1] + 1, _table[i - 1][j] + 1);
 			int extraStep = 0;
-			if (st1[i] != st2[j])
+			if (st1[i - 1] != st2[j - 1])
 				extraStep++;
 			_table[i][j] = std::min(_table[i][j], _table[i - 1][j - 1] + extraStep);
 		}
@@ -107,12 +107,16 @@ size_t RecurseDistDamerau(const std::string& st1, const std::string& st2, int la
 	return chosenOne;
 }
 
-size_t RecurseDistMemDamerau(const std::string& st1,
+int RecurseDistMemDamerau(const std::string& st1,
 	const std::string& st2,
 	int lastIndex1,
 	int lastIndex2,
 	Matrix& mat)
 {
+	//std::cout<< "i " << "j " << lastIndex1 << " " << lastIndex2 << std::endl;
+	if (mat._table[lastIndex1][lastIndex2] != INF)
+		return mat._table[lastIndex1][lastIndex2];
+
 	if (lastIndex1 == 0)
 	{
 		mat._table[lastIndex1][lastIndex2] = lastIndex2;
@@ -124,22 +128,21 @@ size_t RecurseDistMemDamerau(const std::string& st1,
 		return lastIndex1;
 	}
 
-	if (mat._table[lastIndex1][lastIndex2] != INF)
-		return mat._table[lastIndex1][lastIndex2];
+
 
 	int extraStep = 0;
-	if (st1[lastIndex1] != st2[lastIndex2])
+	if (st1[lastIndex1 - 1] != st2[lastIndex2 - 1])
 		extraStep++;
 
-	size_t cutLeft = RecurseDistDamerau(st1, st2, lastIndex1 - 1, lastIndex2) + 1;
-	size_t cutRight = RecurseDistDamerau(st1, st2, lastIndex1, lastIndex2 - 1) + 1;
-	size_t cutBoth = RecurseDistDamerau(st1, st2, lastIndex1 - 1, lastIndex2 - 1) + extraStep;
-	size_t DamerauCut = cutBoth + 1;
+	int cutLeft = RecurseDistMemDamerau(st1, st2, lastIndex1 - 1, lastIndex2,mat) + 1;
+	int cutRight = RecurseDistMemDamerau(st1, st2, lastIndex1, lastIndex2 - 1,mat) + 1;
+	int cutBoth = RecurseDistMemDamerau(st1, st2, lastIndex1 - 1, lastIndex2 - 1,mat) + extraStep;
+	int DamerauCut = cutBoth + 1;
 	if (lastIndex1 > 1 && lastIndex2 > 1 && st1[lastIndex1 - 2] == st2[lastIndex2 - 1]
 		&& st1[lastIndex1 - 1] == st2[lastIndex2 - 2])
-		DamerauCut = RecurseDistDamerau(st1, st2, lastIndex1 - 2, lastIndex2 - 2) + 1;
+		DamerauCut = RecurseDistMemDamerau(st1, st2, lastIndex1 - 2, lastIndex2 - 2,mat) + 1;
 	cutBoth = std::min(DamerauCut, cutBoth);
-	size_t chosenOne = std::min(std::min(cutRight, cutLeft), cutBoth);
+	int chosenOne = std::min(std::min(cutRight, cutLeft), cutBoth);
 	mat._table[lastIndex1][lastIndex2] = chosenOne;
 	return chosenOne;
 }
@@ -149,6 +152,7 @@ size_t Matrix::findRecurseDistMemDamerau(const std::string& st1, const std::stri
 	for (int i = 0; i < _n; i++)
 		for (int j = 0; j < _m; j++)
 			_table[i][j] = INF;
+	//_table[0][0] = 0;
 	return RecurseDistMemDamerau(st1, st2, st1.size(), st2.size(), *this);
 }
 

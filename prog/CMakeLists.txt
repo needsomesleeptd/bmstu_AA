@@ -1,6 +1,9 @@
-cmake_minimum_required(VERSION 3.27)
-project(comp_analysis)
 
-set(CMAKE_CXX_STANDARD 14)
+cmake_minimum_required(VERSION 3.5)
 
-add_executable(comp_analysis main.cpp table.hpp table.cpp)
+project(lab_01_AA)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
+
+add_subdirectory("${PROJECT_SOURCE_DIR}/src")
+add_subdirectory("${PROJECT_SOURCE_DIR}/gtests")
