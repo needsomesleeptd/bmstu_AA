@@ -4,7 +4,7 @@
 #include "table.hpp"
 #include <random>
 #include <iostream>
-
+#include <wchar.h>
 const double TIMEDIVISION = 1e6; //Millisecounds
 
 
@@ -104,7 +104,7 @@ void getTimeResultsWord(size_t wordsLen,int countProcessed)
 	damerauRec /= countProcessed;
 	damerauRecMem /= countProcessed;
 	levMatrix /= countProcessed;
-	printf("|%7zu||%25.5g||%28.5g||%32.5g||%29.5g|\n",wordsLen,damerauMatrix,damerauRec,damerauRecMem,levMatrix);
+	wprintf(L"|%7zu||%25.5g||%28.5g||%32.5g||%29.5g|\n",wordsLen,damerauMatrix,damerauRec,damerauRecMem,levMatrix);
 }
 
 
@@ -112,7 +112,7 @@ void getTimeResultsWord(size_t wordsLen,int countProcessed)
 
 void getTimeResults(size_t wordLenStart,size_t wordLenStop,size_t wordLenStep,int countProcessed)
 {
-	printf("\n\n|   n   ||   DamerauMatrix(mcs)    ||   DamerauRecursion(mcs)    ||  DamerauMemoryRecursion(mcs)   ||    LevenshteinMatrix(mcs)   |\n");
+	wprintf(L"\n\n|   n   ||   DamerauMatrix(mcs)    ||   DamerauRecursion(mcs)    ||  DamerauMemoryRecursion(mcs)   ||    LevenshteinMatrix(mcs)   |\n");
 	for (size_t i = wordLenStart; i < wordLenStop; i+= wordLenStep)
 	{
 		getTimeResultsWord(i,countProcessed);
