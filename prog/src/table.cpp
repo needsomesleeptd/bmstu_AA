@@ -13,7 +13,7 @@ Matrix::Matrix(int n, int m)
 	_m = m + 1;
 
 }
-int Matrix::findMatrixDistDamerau(const std::wstring& st1, const std::wstring& st2)
+size_t Matrix::findMatrixDistDamerau(const std::wstring& st1, const std::wstring& st2)
 {
 	int n = st1.size() + 1;
 	int m = st2.size() + 1;
@@ -45,7 +45,7 @@ int Matrix::findMatrixDistDamerau(const std::wstring& st1, const std::wstring& s
 	return _table[n - 1][m - 1];
 }
 
-int Matrix::findMatrixDistLev(const std::wstring& st1, const std::wstring& st2)
+size_t Matrix::findMatrixDistLev(const std::wstring& st1, const std::wstring& st2)
 {
 	int n = st1.size() + 1;
 	int m = st2.size() + 1;
@@ -107,7 +107,7 @@ size_t RecurseDistDamerau(const std::wstring& st1, const std::wstring& st2, int 
 	return chosenOne;
 }
 
-int RecurseDistMemDamerau(const std::wstring& st1,
+size_t RecurseDistMemDamerau(const std::wstring& st1,
 	const std::wstring& st2,
 	int lastIndex1,
 	int lastIndex2,
@@ -152,7 +152,7 @@ size_t Matrix::findRecurseDistMemDamerau(const std::wstring& st1, const std::wst
 	for (int i = 0; i < _n; i++)
 		for (int j = 0; j < _m; j++)
 			_table[i][j] = INF;
-	//_table[0][0] = 0;
+
 	return RecurseDistMemDamerau(st1, st2, st1.size(), st2.size(), *this);
 }
 
