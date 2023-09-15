@@ -17,3 +17,6 @@ parts/*.run.xml
 parts/*.gz
 parts/*.synctexgz
 parts/*.toc
+*.fls
+*latexmk
+*svg-inkscape*

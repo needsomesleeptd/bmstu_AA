@@ -2,8 +2,11 @@ PDF = RPZ_RAZIN_IU7_44B
 MAIN = main
 
 $(PDF) : $(MAIN).tex *.tex
-	pdflatex  $< 
-	pdflatex  $< 
+	pdflatex --shell-escape $< 
+	biber $<
+	pdflatex --shell-escape $< 
+	biber $<
+	pdflatex --shell-escape $< 
 	
 	make clean
 

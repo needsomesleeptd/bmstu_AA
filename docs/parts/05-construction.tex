@@ -26,7 +26,53 @@
 перед вычислением текущего значения происходит проверка: в случае, если значение $M[i][j] = +\infty$, вычисляется текущее значение и заносится в матрицу, иначе
 вычисления значения не происходит и значение сразу берется из ячейки $M[i][j]$.
 
-\subsection{Блок схемы}
+\subsection{Схемы алгоритмов}
+%TODO - insert block schemes
+\begin{figure}[H]
+	\centering
+	\includesvg[height=1.3\textwidth,width=1\textwidth]{../img/lab_01_AA_table_Lev-lev.svg}
+	\caption{Схема алгоритма поиска расстояния Левенштейна с помощью матрицы}
+	\label{fig:leb_algo_matrix}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includesvg[height=1.3\textwidth,width=1\textwidth]{../img/lab_01_AA_table_Lev-Damerau-lev.svg}
+	\caption{Схема алгоритма поиска расстояния Дамерау-Левенштейна с помощью матрицы}
+	\label{fig:dam_algo_matrix}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includesvg[height=1.3\textwidth,width=1\textwidth]{../img/lab_01_AA_table_Lev-Damerau-mem.svg}
+	\caption{Схема алгоритма поиска расстояния Дамерау-Левенштейна с помошью рекурсии с мемоизацией}
+	\label{fig:dam_algo_rec_mem}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includesvg[height=1.3\textwidth,width=1\textwidth]{../img/lab_01_AA_table_Lev-Damerau-recurse.svg}
+	\caption{Схема алгоритма поиска расстояния Дамерау-Левенштейна с помошью рекурсии}
+	\label{fig:dam_algo_rec}
+\end{figure}
+
+
+\subsection{Структуры данных}
+Для реализации выбранных алгоритмов были использованы следующие структуры данных:
+\begin{enumerate}[label*=\arabic*.]
+	\item Матрица --- массив векторов типа int.
+	\item Строка --- массив типа wchar.
+	\item Длина строки --- целое значение типа size\_t.
+\end{enumerate}
+
+
+\textbf{Вывод}
+
+На данном этапе были рассмотрены алгоритмы и записаны их схемы, также были описаны используемые структуры данных.
+
+
+
+
 
 
 
