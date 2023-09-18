@@ -25,8 +25,12 @@ int main()
 						"2.Расчет расстояния Дамерау-Левенштейна с помощью матрицы\n"
 						"3.Расчет расстояния Дамерау-Левенштейна с помощью рекурсии без мемоизации\n"
 						"4.Расчет расстояния Дамерау-Левенштейна с помощью рекурсии с мемоизации\n"
-						"5.Вывести временные замеры различных методов";
+						"5.Вывести временные замеры различных методов\n"
+						"6.Сменить флаг вывода матриц\n"
+						"7.Провести расчет всеми алгоритмами";
+
 	int curCommand = 1;
+	bool matrixShowFlag = false;
 	while (curCommand != 0)
 	{
 		//std::cout <<"123";
@@ -35,7 +39,7 @@ int main()
 		std::wcin >> curCommand;
 		if (!curCommand)
 			break;
-		else  if (curCommand < 5)
+		else  if (curCommand < 5 || curCommand == 7)
 		{
 			std::wstring st1;
 			std::wstring st2;
@@ -43,18 +47,44 @@ int main()
 			std::wcin >> st1;
 			std::wcout << L"Введите второе слово: \n";
 			std::wcin >> st2;
-			std::wcout << L"Полученное расстояние: ";
+
 			Matrix mat(st1.size(), st2.size());
 			size_t distance = 0;
-			if (curCommand == 1)
-				distance = mat.findMatrixDistLev(st1,st2);
-			else if (curCommand == 2)
-				distance = mat.findMatrixDistDamerau(st1,st2);
-			else if (curCommand == 3)
-				distance = mat.findMatrixDistDamerau(st1,st2);
-			else if (curCommand == 4)
-				distance = mat.findRecurseDistMemDamerau(st1,st2);
-			std::wcout << distance << L"\n";
+			if (curCommand == 1 || curCommand == 7)
+			{
+				distance = mat.findMatrixDistLev(st1, st2);
+				if (matrixShowFlag)
+				{
+					std::wcout << L"\nПолученная матрица: \n";
+					mat.printMatrix();
+				}
+				std::wcout << L"\nПолученное расстояние Левенштейна с помощью матрицы: \n";
+				std::wcout << distance << L"\n";
+			}
+			if (curCommand == 2 || curCommand == 7)
+			{
+				distance = mat.findMatrixDistDamerau(st1, st2);
+				if (matrixShowFlag)
+				{
+					std::wcout << L"\nПолученная матрица: \n";
+					mat.printMatrix();
+				}
+				std::wcout << L"\nПолученное расстояние Дамерау-Левенштейна с помощью матрицы: \n";
+				std::wcout << distance << L"\n";
+			}
+			if (curCommand == 3 || curCommand == 7)
+			{
+				distance = mat.findMatrixDistDamerau(st1, st2);
+				std::wcout << L"\nПолученное расстояние Дамерау-Левенштейна с помощью рекурсии: \n";
+				std::wcout << distance << L"\n";
+			}
+			if (curCommand == 4 || curCommand == 7)
+			{
+				distance = mat.findRecurseDistMemDamerau(st1, st2);
+				std::wcout << L"\nПолученное расстояние Дамерау-Левенштейна с помощью рекурсии с мемоизацией: \n";
+				std::wcout << distance << L"\n";
+			}
+
 
 		}
 		else if (curCommand == 5)
@@ -69,6 +99,15 @@ int main()
 			std::wcin >> countIter;
 			getTimeResults(sizeBegin,sizeEnd,step,countIter);
 		}
+		else if (curCommand == 6)
+		{
+			matrixShowFlag = !matrixShowFlag;
+			if (matrixShowFlag)
+				std::wcout << L"\nМатрицы будут выведены при следующем запуске\n";
+			else
+				std::wcout << L"\nВывод матриц отключен\n";
+		}
+
 	}
 
 	//getTimeResults(1,15,1,5);

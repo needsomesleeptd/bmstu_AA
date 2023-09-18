@@ -85,7 +85,7 @@ double getCPUTimeRecLev(const std::wstring &st1,const std::wstring &st2,Matrix& 
 void getTimeResultsWord(size_t wordsLen,int countProcessed)
 {
 
-
+	const int wordLenMax = 12;
 	std::wstring st1 = generateString(wordsLen);
 	std::wstring st2 = generateString(wordsLen);
 	Matrix mat(st1.size(),st2.size());
@@ -96,7 +96,10 @@ void getTimeResultsWord(size_t wordsLen,int countProcessed)
 	for (int i = 0; i < countProcessed ;++i)
 	{
 		damerauMatrix += getCPUTimeMatDamerau(st1,st2,mat);
-		damerauRec += getCPUTimeRecDamerau(st1,st2,mat);
+		if (wordsLen > wordLenMax)
+			damerauRec = -1.0;
+		else
+			damerauRec += getCPUTimeRecDamerau(st1,st2,mat);
 		damerauRecMem += getCPUTimeRecMemDamerau(st1,st2,mat);
 		levMatrix += getCPUTimeRecLev(st1,st2,mat);
 	}
@@ -105,6 +108,7 @@ void getTimeResultsWord(size_t wordsLen,int countProcessed)
 	damerauRecMem /= countProcessed;
 	levMatrix /= countProcessed;
 	wprintf(L"|%7zu||%25.5g||%28.5g||%32.5g||%29.5g|\n",wordsLen,damerauMatrix,damerauRec,damerauRecMem,levMatrix);
+	std::cout << std::flush;
 }
 
 

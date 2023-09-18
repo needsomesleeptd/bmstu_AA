@@ -77,9 +77,9 @@ void Matrix::printMatrix()
 	{
 		for (int j = 0; j < _m; j++)
 		{
-			std::cout << _table[i][j] << " ";
+			std::wcout << _table[i][j] << L" ";
 		}
-		std::cout << std::endl;
+		std::wcout << std::endl;
 	}
 }
 

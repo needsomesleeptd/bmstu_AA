@@ -8,5 +8,5 @@ set(SOURCES   table.cpp timings.cpp)
 
 
 ADD_LIBRARY(src ${HEADERS} ${SOURCES})
-
+add_compile_options(-O0)
 add_executable(lab_01_src ${HEADERS} ${SOURCES} main.cpp)

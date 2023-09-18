@@ -162,7 +162,7 @@ size_t Matrix::findRecurseDistDamerau(const std::wstring& st1, const std::wstrin
 }
 \end{lstlisting}
 
-\subsection{Тестирование}
+\section{Тестирование}
 При написании тестов использовалась библиотека $gtest$, позволяющая писать модульные тесты, которые очень удобны 
 в данном случае. Данные тесты приведены в листинге  \ref{lst:unit_tests}. При реализации данных тестов вычисленные значения
 сравниваются со значениями, заранее известными для соответствующих входных данных, с помощью приведенной библиотеки.
@@ -294,3 +294,42 @@ size_t Matrix::findRecurseDistDamerau(const std::wstring& st1, const std::wstrin
         ASSERT_EQ(LevLen,lenMatLev);
     }
 \end{lstlisting}
+
+Также даныне тесты рассмотрены в таблице \ref{t:unit_tests}.
+
+\begin{table}[ht]
+	\small
+	\begin{center}
+		\begin{threeparttable}
+		\caption{Модульные тесты}
+        \label{t:unit_tests}
+        \fontsize{6pt}{6pt}
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\multicolumn{2}{|c|}{\bfseries Входные данные}
+			& \multicolumn{4}{c|}{\bfseries Расстояние и алгоритм} \\ 
+			\hline 
+			&
+			& \multicolumn{1}{c|}{\bfseries Левенштейна} 
+			& \multicolumn{3}{c|}{\bfseries Дамерау-Левенштейна} \\ \cline{3-6}
+			
+			\bfseries Строка 1 & \bfseries Строка 2 & \bfseries Итеративный & \bfseries Итеративный
+			
+			& \multicolumn{2}{c|}{\bfseries Рекурсивный} \\ \cline{5-6}
+			& & & & \bfseries Без кеша & \bfseries С кешом \\
+			\hline
+			wwwwwwc & bbbbbbc & 6 & 6 & 6 & 6 \\
+			\hline
+			AB & BA & 2 & 1 & 1 & 1 \\
+			\hline
+			KAKAKAKABABKA & AKAAKBBABAK & 5 & 4 & 4 & 4 \\
+			\hline
+			ABC & BCA & 2 & 2 & 2 & 2 \\
+			\hline
+			ВФА & АВФ & 2 & 2 & 2 & 2 \\
+			\hline
+			ADFS & ABFDSABDDASDADADF & 14 & 14 & 14 & 14 \\
+			\hline
+		\end{tabular}	
+		\end{threeparttable}
+	\end{center}
+\end{table}
