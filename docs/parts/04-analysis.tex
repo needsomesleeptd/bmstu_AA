@@ -18,14 +18,14 @@
 Расстояние Левенштейна~\cite{levenshtein} (редакционное расстояние, дистанция редактирования) --- метрика, измеряющая разность между двумя последовательностями символов.
 
 Вводятся операции нескольких типов:
-\begin{enumerate}[label=\arabic*]
+\begin{enumerate}[label=\arabic*.]
 	\item I (англ. insert) --- операция вставки символа.
 	\item D (англ. delete) --- операция удаления символа.
 	\item R (англ.replace) --- операция замены символа.
 \end{enumerate}
 Также введем символ $\lambda$, обозначающий пустой символ строки, не входящий ни в одну из рассматриваемых строк.
 
-Будем считать стоимость каждой вышеизложенной операции равной 1:
+Будем считать стоимость каждой вышеизложенной операции равной~1:
 \begin{itemize}[label=---]
 	\item $D(a, b) = 1$, $a \neq b$, в противном случае замена не происходит;
 	\item $D(\lambda, b) = 1$;
@@ -50,16 +50,16 @@
 \begin{small}
 \begin{equation}
 	\label{eq:lev}
-	D(i,j) = \left\{ \begin{array}{ll}
+	D(S_{1}[1..i],S_{2}[1..j]) = \left\{ \begin{array}{ll}
 	 j, & \textrm{$\mbox{если }i = 0$}\\
 	 i, & \textrm{$\mbox{если }j = 0, i > 0$}\\
-	min(D(S1[1..i], S2[1.. j - 1])+1,\\
-	\qquad D(S1[1..i - 1], S2[1..j]) + 1, &\textrm{$\mbox{если }i>0, j>0$}\\
-	\qquad D(S1[1..i - 1], S2[1..j - 1]) + m(S1[i],S2[j]),
+	min(D(S_{1}[1..i], S_{2}[1.. j - 1])+1,\\
+	\qquad D(S_{1}[1..i - 1], S_{2}[1..j]) + 1, &\textrm{$\mbox{если }i>0, j>0$}\\
+	\qquad D(S_{1}[1..i - 1], S_{2}[1..j - 1]) + m(S_{1}[i],S_{2}[j]),
 	  \end{array} \right,
 	\end{equation}
 \end{small}
-где сравнение символов строк $S_1$ и $S_2$ рассчитывается как:
+где сравнение символов строк $S_{1}$ и $S_{2}$ рассчитывается как:
 \begin{equation}
 	\label{eq:m}
 	m(a, b) = \begin{cases}
@@ -74,33 +74,33 @@
 \begin{tiny}
 \begin{equation}
 	\label{eq:DL}
-	D(S1[1\cdots i],S2[1 \cdots j]) = \left\{ \begin{array}{ll}
+	D(S_{1}[1\cdots i],S_{2}[1 \cdots j]) = \left\{ \begin{array}{ll}
 		j, & \textrm{$\mbox{если }i = 0$}\\
 		i, & \textrm{$\mbox{если }j = 0, i > 1$}\\ 
-		min(D(S1[1..i], S2[1.. j - 1]) + 1,\\
-		\qquad D(S1[1..i - 1], S2[1..j]) + 1,\\
-		\qquad D(S1[1..i - 1], S2[1..j - 1]) + \\
+		min(D(S_{1}[1..i], S_{2}[1.. j - 1]) + 1,\\
+		\qquad D(S_{1}[1..i - 1], S_{2}[1..j]) + 1,\\
+		\qquad D(S_{1}[1..i - 1], S_{2}[1..j - 1]) + \\
 		\qquad+\left[ 
 		\begin{array}{ccc}
-			0, & \textrm{$\mbox{если }S1[i] == S2[j],$}\\
+			0, & \textrm{$\mbox{если }S_{1}[i] == S_{2}[j],$}\\
 			1, & \textrm{иначе}
 		\end{array} 
 		\right.\\
 		\qquad \left[
 		\begin{array}{ccc}
-			D(S1[1..i - 2], S2[1..j - 2]) + 1), & \textrm{$\mbox{если }i > 1, j > 1,$}\\
-			& \textrm{$S1[i] == S2[j - 1],$}\\
-			& \textrm{$S1[i - 1] == S2[j]$}\\
+			D(S_{1}[1..i - 2], S_{2}[1..j - 2]) + 1), & \textrm{$\mbox{если }i > 1, j > 1,$}\\
+			& \textrm{$S_{1}[i] == S_{2}[j - 1],$}\\
+			& \textrm{$S_{1}[i - 1] == S_{2}[j]$}\\
 			+{\infty}, & \textrm{иначе}
 		\end{array}
 	\right.\\
 		
-		min(D(S1[1..i], S2[1..j - 1]) + 1,\\
-		\qquad D(S1[1..i - 1], S2[1..j]) + 1, \\
-		\qquad D(S1[1..i - 1], S2[1..j - 1]) + \\
+		min(D(S_{1}[1..i], S_{2}[1..j - 1]) + 1,\\
+		\qquad D(S_{1}[1..i - 1], S_{2}[1..j]) + 1, \\
+		\qquad D(S_{1}[1..i - 1], S_{2}[1..j - 1]) + \\
 		\qquad+\left[ 
 		\begin{array}{ccc}
-			0, & \textrm{$\mbox{если }S1[i] == S2[j],$}\\
+			0, & \textrm{$\mbox{если }S_{1}[i] == S_{2}[j],$}\\
 			1, & \textrm{иначе}
 		\end{array} 
 		\right.), &\textrm{$\mbox{если }i>0, j>0$}
