@@ -50,13 +50,16 @@
 \small
 \begin{equation}
 	\label{eq:lev}
-	D(S_{1}[1..i],S_{2}[1..j]) = \left\{\begin{array}{ll}
-	 \max(i,j), & \textrm{$\mbox{если }\min(i,j) = 0,$}\\
-	\min(D(S_{1}[1..i], S_{2}[1.. j - 1])+1,\\
-	\qquad D(S_{1}[1..i - 1], S_{2}[1..j]) + 1, &\textrm{$\mbox{иначе}$}\\
-	\qquad D(S_{1}[1..i - 1], S_{2}[1..j - 1]) +\\
-	\qquad + m(S_{1}[i],S_{2}[j]))
-	\end{array}.\right\}
+	D(S_{1}[1..i],S_{2}[1..j]) = 
+	\begin{cases}
+		\begin{array}{ll}
+			\max(i,j), & \textrm{$\mbox{если }\min(i,j) = 0,$}\\
+			\min(D(S_{1}[1..i], S_{2}[1.. j - 1])+1,\\
+			\qquad D(S_{1}[1..i - 1], S_{2}[1..j]) + 1, &\textrm{$\mbox{иначе},$}\\
+			\qquad D(S_{1}[1..i - 1], S_{2}[1..j - 1]) +\\
+			\qquad + m(S_{1}[i],S_{2}[j]))
+		\end{array}
+	\end{cases}
 \end{equation}
 где сравнение символов строк $S_{1}$ и $S_{2}$ рассчитывается как:
 \small

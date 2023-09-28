@@ -167,144 +167,151 @@ size_t Matrix::findRecurseDistDamerau(const std::wstring& st1, const std::wstrin
 в данном случае. Данные тесты приведены в листинге  \ref{lst:unit_tests}. При реализации данных тестов вычисленные значения
 сравниваются со значениями, заранее известными для соответствующих входных данных, с помощью приведенной библиотеки.
 \begin{lstlisting}[label=lst:unit_tests, caption=Модульные тесты]
-    //Тестирование при словах одинаковой длины
-    TEST(LenTest, EQLENTEST) {
-        std::wstring st1 = L"wwwwwwc";
-        std::wstring st2 = L"bbbbbbc";
-        Matrix mat(st1.size(),st2.size());
-    
-        int DamerauLen = 6;
-        int LevLen  = 6;
-    
-        int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-        int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-        int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-    
-        int lenMatLev = mat.findMatrixDistLev(st1,st2);
-    
-        ASSERT_EQ(DamerauLen,lenMatDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-        ASSERT_EQ(LevLen,lenMatLev);
-    }
-    
-    //Тестирование с различными результатами при использовании различных расстояний
-    TEST(LenTest, DIFLENTEST) {
-        std::wstring st1 = L"AB";
-        std::wstring st2 = L"BA";
-        Matrix mat(st1.size(),st2.size());
-    
-        int DamerauLen = 1;
-        int LevLen  = 2;
-    
-        int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-        int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-        int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-    
-        int lenMatLev = mat.findMatrixDistLev(st1,st2);
-    
-        ASSERT_EQ(DamerauLen,lenMatDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-        ASSERT_EQ(LevLen,lenMatLev);
-    }
-    
-    
-    //Различающийся результат расстояний при словах различной длины
-    TEST(LenTest, LongWords) {
-        std::wstring st1 = L"KAKAKAKABABKA";
-        std::wstring st2 = L"AKAAKBBABAK";
-        Matrix mat(st1.size(),st2.size());
-    
-        int DamerauLen = 4;
-        int LevLen  = 5;
-    
-        int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-        int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-        int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-    
-        int lenMatLev = mat.findMatrixDistLev(st1,st2);
-    
-        ASSERT_EQ(DamerauLen,lenMatDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-        ASSERT_EQ(LevLen,lenMatLev);
-    }
-    
-    //Тестирование подобное тесту на русском языке
-    TEST(LenTest, English) {
-        std::wstring st1 = L"BCA";
-        std::wstring st2 = L"ABC";
-        Matrix mat(st1.size(),st2.size());
-    
-        int DamerauLen = 2;
-        int LevLen  = 2;
-    
-        int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-        int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-        int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-    
-        int lenMatLev = mat.findMatrixDistLev(st1,st2);
-    
-        ASSERT_EQ(DamerauLen,lenMatDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-        ASSERT_EQ(LevLen,lenMatLev);
-    }
-    
-    //Использование русских букв
-    TEST(LenTest, Russian) {
-        std::wstring st1 = L"ВФА";
-        std::wstring st2 = L"АВФ";
-        Matrix mat(st1.size(),st2.size());
-    
-        int DamerauLen = 2;
-        int LevLen  = 2;
-    
-        int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-        int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-        int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-    
-        int lenMatLev = mat.findMatrixDistLev(st1,st2);
-    
-        ASSERT_EQ(DamerauLen,lenMatDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-        ASSERT_EQ(LevLen,lenMatLev);
-    }
-    
-    //Большая разница в длине слов
-    TEST(LenTest, BIGSIZEDIFF) {
-        std::wstring st1 = L"ADFS";
-        std::wstring st2 = L"ABFDSABDDASDADADF";
-        Matrix mat(st1.size(),st2.size());
-    
-        int DamerauLen = 14;
-        int LevLen  = 14;
-    
-        int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-        int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-        int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-    
-        int lenMatLev = mat.findMatrixDistLev(st1,st2);
-    
-        ASSERT_EQ(DamerauLen,lenMatDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-        ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-        ASSERT_EQ(LevLen,lenMatLev);
-    }
+   //
+   // Created by Андрей on 10/09/2023.
+   //
+   #include <gtest/gtest.h>
+   #include "../../src/table.hpp"
+   
+   //Тестирование при словах одинаковой длины
+   TEST(LenTest, EQLENTEST) {
+   	std::wstring st1 = L"wwwwwwc";
+   	std::wstring st2 = L"bbbbbbc";
+   	Matrix mat(st1.size(),st2.size());
+   	
+   	int DamerauLen = 6;
+   	int LevLen  = 6;
+   	
+   	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
+   	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
+   	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+   	
+   	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+   	
+   	ASSERT_EQ(DamerauLen,lenMatDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
+   	ASSERT_EQ(LevLen,lenMatLev);
+   }
+   
+   //Тестирование с различными результатами при использовании различных расстояний
+   TEST(LenTest, DIFLENTEST) {
+   	std::wstring st1 = L"AB";
+   	std::wstring st2 = L"BA";
+   	Matrix mat(st1.size(),st2.size());
+   	
+   	int DamerauLen = 1;
+   	int LevLen  = 2;
+   	
+   	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
+   	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
+   	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+   	
+   	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+   	
+   	ASSERT_EQ(DamerauLen,lenMatDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
+   	ASSERT_EQ(LevLen,lenMatLev);
+   }
+   
+   
+   //Различающийся результат расстояний при словах различной длины
+   TEST(LenTest, LongWords) {
+   	std::wstring st1 = L"KAABKA";
+   	std::wstring st2 = L"AKAAK";
+   	Matrix mat(st1.size(),st2.size());
+   	
+   	int DamerauLen = 3;
+   	int LevLen  = 3;
+   	
+   	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
+   	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
+   	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+   	
+   	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+   	
+   	ASSERT_EQ(DamerauLen,lenMatDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
+   	ASSERT_EQ(LevLen,lenMatLev);
+   }
+   
+   //Тестирование подобное тесту на русском языке
+   TEST(LenTest, English) {
+   	std::wstring st1 = L"BCA";
+   	std::wstring st2 = L"ABC";
+   	Matrix mat(st1.size(),st2.size());
+   	
+   	int DamerauLen = 2;
+   	int LevLen  = 2;
+   	
+   	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
+   	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
+   	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+   	
+   	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+   	
+   	ASSERT_EQ(DamerauLen,lenMatDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
+   	ASSERT_EQ(LevLen,lenMatLev);
+   }
+   
+   //Использование русских букв
+   TEST(LenTest, Russian) {
+   	std::wstring st1 = L"ВФА";
+   	std::wstring st2 = L"АВФ";
+   	Matrix mat(st1.size(),st2.size());
+   	
+   	int DamerauLen = 2;
+   	int LevLen  = 2;
+   	
+   	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
+   	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
+   	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+   	
+   	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+   	
+   	ASSERT_EQ(DamerauLen,lenMatDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
+   	ASSERT_EQ(LevLen,lenMatLev);
+   }
+   
+   //Большая разница в длине слов
+   TEST(LenTest, BIGSIZEDIFF) {
+   	std::wstring st1 = L"ADF";
+   	std::wstring st2 = L"ABFDSADADF";
+   	Matrix mat(st1.size(),st2.size());
+   	
+   	int DamerauLen = 7;
+   	int LevLen  = 7;
+   	
+   	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
+   	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
+   	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+   	
+   	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+   	
+   	ASSERT_EQ(DamerauLen,lenMatDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
+   	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
+   	ASSERT_EQ(LevLen,lenMatLev);
+   }
 \end{lstlisting}
 
-Также даныне тесты рассмотрены в таблице \ref{t:unit_tests}.
+Также данные тесты рассмотрены в таблице \ref{t:unit_tests}.
 
 \begin{table}[ht]
-	\small
+	
 	\begin{center}
+		\small
 		\begin{threeparttable}
 		\caption{Модульные тесты}
         \label{t:unit_tests}
-        \fontsize{6pt}{6pt}
 		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
 			\multicolumn{2}{|c|}{\bfseries Входные данные}
 			& \multicolumn{4}{c|}{\bfseries Расстояние и алгоритм} \\ 
 			\hline 
@@ -321,13 +328,13 @@ size_t Matrix::findRecurseDistDamerau(const std::wstring& st1, const std::wstrin
 			\hline
 			AB & BA & 2 & 1 & 1 & 1 \\
 			\hline
-			KAKAKAKABABKA & AKAAKBBABAK & 5 & 4 & 4 & 4 \\
+			KAABKA & AKAAK & 3 & 3 & 3 & 3 \\
 			\hline
 			ABC & BCA & 2 & 2 & 2 & 2 \\
 			\hline
 			ВФА & АВФ & 2 & 2 & 2 & 2 \\
 			\hline
-			ADFS & ABFDSABDDASDADADF & 14 & 14 & 14 & 14 \\
+			ADF & ABFDSADADF & 7 & 7 & 7 & 7 \\
 			\hline
 		\end{tabular}	
 		\end{threeparttable}
