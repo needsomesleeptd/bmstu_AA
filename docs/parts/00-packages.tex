@@ -5,7 +5,6 @@
 \usepackage{enumitem}
 \usepackage{csquotes}
 
-\usepackage[backend=biber]{biblatex}
 
 \usepackage{longtable}
 
@@ -23,6 +22,9 @@
 \captionsetup[lstlisting]{justification=raggedright,singlelinecheck=off}
 \captionsetup{labelsep=endash}
 \captionsetup[figure]{name={Рисунок}}
+
+
+
 
 \usepackage{amsmath}
 \usepackage{csvsimple}
@@ -79,7 +81,7 @@
 % Для листинга кода:
 \lstset{%
 	language=c++,   					% выбор языка для подсветки	
-	basicstyle=\small\sffamily,			% размер и начертание шрифта для подсветки кода
+	basicstyle=\small\ttfamily,			% размер и начертание шрифта для подсветки кода
 	numbersep=5pt,
 	numbers=left,						% где поставить нумерацию строк (слева\справа)
 	%numberstyle=,					    % размер шрифта для номеров строк
@@ -195,3 +197,7 @@
 \newcommand{\code}[1]{\texttt{#1}}
 
 \newcommand{\cchapter}[1]{\chapter[#1]{\centering #1}}
+
+
+
+%\usepackage[backend=biber,style=numeric,sorting=ynt]{biblatex}
