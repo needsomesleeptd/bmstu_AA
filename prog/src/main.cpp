@@ -74,7 +74,7 @@ int main()
 			}
 			if (curCommand == 3 || curCommand == 7)
 			{
-				distance = mat.findMatrixDistDamerau(st1, st2);
+				distance = mat.findRecurseDistDamerau(st1, st2);
 				std::wcout << L"\nПолученное расстояние Дамерау-Левенштейна с помощью рекурсии: \n";
 				std::wcout << distance << L"\n";
 			}
@@ -112,7 +112,7 @@ int main()
 
 	//getTimeResults(1,15,1,5);
 
-
+	//getMemResults(0,201,10,1);
 
 
 	return 0;

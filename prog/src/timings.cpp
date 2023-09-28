@@ -111,9 +111,45 @@ void getTimeResultsWord(size_t wordsLen,int countProcessed)
 	std::cout << std::flush;
 }
 
+void getMemResultsWord(size_t wordsLen,int countProcessed)
+{
+
+
+	std::wstring st1 = generateString(wordsLen);
+	std::wstring st2 = generateString(wordsLen);
+	Matrix mat(st1.size(),st2.size());
+
+	size_t matrixSize = sizeof(Matrix)  + (wordsLen + 1) * (wordsLen + 1) * sizeof(int);
+
+	size_t damerauMatrix = matrixSize + sizeof(Matrix&) +  2 * (wordsLen * sizeof(wchar_t)
+		+ sizeof(std::wstring) + sizeof(std::wstring&)) + sizeof(int);
+
+	size_t damerauRec = (wordsLen + wordsLen) *  (2 * sizeof(std::wstring&) + sizeof(int) + 6 * sizeof(size_t))
+		+ 2 * (wordsLen * sizeof(wchar_t) + sizeof(std::wstring));
+
+	size_t damerauRecMem = (wordsLen + wordsLen) *  (2 * sizeof(std::wstring&) + sizeof(int) + 6 * sizeof(size_t) + sizeof(Matrix&))
+		+ 2 * (wordsLen * sizeof(wchar_t) + sizeof(std::wstring)) + matrixSize + sizeof(Matrix&);
+
+	size_t levMatrix = matrixSize + sizeof(Matrix&) +  2 * (wordsLen * sizeof(wchar_t)
+		+ sizeof(std::wstring) + sizeof(std::wstring&)) + sizeof(int);
+
+	wprintf(L"|%7zu||%20zu||%23zu||%27zu||%24zu|\n",wordsLen,damerauMatrix,damerauRec,damerauRecMem,levMatrix);
+	std::cout << std::flush;
+}
 
 
 
+
+
+
+void getMemResults(size_t wordLenStart,size_t wordLenStop,size_t wordLenStep,int countProcessed)
+{
+	wprintf(L"\n\n|   n   ||   DamerauMatrix    ||   DamerauRecursion    ||  DamerauMemoryRecursion   ||    LevenshteinMatrix   |\n");
+	for (size_t i = wordLenStart; i < wordLenStop; i+= wordLenStep)
+	{
+		getMemResultsWord(i,countProcessed);
+	}
+}
 void getTimeResults(size_t wordLenStart,size_t wordLenStop,size_t wordLenStep,int countProcessed)
 {
 	wprintf(L"\n\n|   n   ||   DamerauMatrix(mcs)    ||   DamerauRecursion(mcs)    ||  DamerauMemoryRecursion(mcs)   ||    LevenshteinMatrix(mcs)   |\n");
