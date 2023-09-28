@@ -35,7 +35,7 @@
 <<Мемоизация>> имеется в виду  рекурсия с мемоизацией, описание которой приведено в разделе \ref{subec:memorysation_descr}.
 
 Заметим, что некоторые поля в данной таблице
-имеют значение <<->>, это обусловлено тем, что дальнейший расчет значений столбца <<Рекурсия-Дамерау>> окажется слишком
+имеют значение <<$\sim$>>, это обусловлено тем, что дальнейший расчет значений столбца <<Рекурсия-Дамерау>> окажется слишком
 долгим, полученных данных достаточно для проведения исследования.
 
 Замеры проводились на одинаковых длин строк от 1 до 60 с шагом 1, для получения достоверных результатов замеры 
@@ -53,9 +53,10 @@
 
 
 
+
 \begin{table}[!ht]
-	\label{t:timings}
 	\centering
+	\label{t:timings}
 	\caption{Полученная таблица замеров по времени различных реализаций алгоритмов поиска редакционных расстояний}
 	\begin{tabular}{|c|c|c|c|c|}
 		\hline
@@ -141,7 +142,7 @@
 
 Максимальная глубина стека вызовов при рекурсивной реализации нахождения расстояния Дамерау--Левенштейна равна сумме входящих строк,
 так как дерево рекурсии будет расти пока длина хотя бы одной строки не будет равна 1. Таким образом при рекурсивном поиске данного расстояния затраченная память
-будет рассчитываться  аналогично примеру \ref{eq:dl_rec_memory}.
+будет рассчитываться  аналогично примеру (\ref{eq:dl_rec_memory}).
 \begin{equation}
 	\label{eq:dl_rec_memory}
 	(n + m) \cdot (2 \cdot sizeof(wstring\&) + sizeof(int) + 6 \cdot sizeof(size\_t)) + 2 \cdot sizeof(wstring),
@@ -163,16 +164,16 @@
 	\label{eq:dl_hash_memory}
     \small
 	\begin{aligned}
-		(n + m) \cdot (2 \cdot sizeof(string\&) + sizeof(int) + sizeof(matrix\&) + 6 \cdot sizeof(size\_t)) \\
+		(n + m) \cdot (2 \cdot sizeof(string\&) + sizeof(int)+\\ +sizeof(matrix\&) + 6 \cdot sizeof(size\_t)) \\
         + (2 \cdot sizeof(string) + sizeof(matrix))
 	\end{aligned}
 \end{equation}
 
-Затраты памяти на хранение матрицы описаны в  \ref{eq:matrix_mem}.
+Затраты памяти на хранение матрицы описаны в  (\ref{eq:matrix_mem}).
 \begin{equation}
 	\label{eq:matrix_mem}
     \begin{aligned}
-	sizeof(matrix) = sizeof(int) \cdot (n+1) \cdot (m + 1)  \\
+	sizeof(matrix) = sizeof(int) \cdot (n+1) \cdot (m + 1)+  \\
     + sizeof(int) \cdot 2 + sizeof(int\&) \cdot (n + 1) + sizeof(int\&\&).
     \end{aligned}
 \end{equation}
@@ -190,10 +191,10 @@
 	\label{eq:lev_mtr_memory}
 	\begin{aligned}
 		sizeof(matrix) + sizeof(matrix&) + 2 \cdot sizeof(wstring\&)\\
-        + 2 \cdot sizeof(wstring&) + sizeof(int) + 3 \cdot sizeof(int).
+        + 2 \cdot sizeof(wstring&) + sizeof(int) + 3 \cdot sizeof(int),
 	\end{aligned}
 \end{equation}
-где 
+где:
 \begin{itemize}
 	\item $sizeof(matrix) + sizeof(matrix\&)$ --- хранение матрицы и ее указателя в кадре стека;
 	\item $2 \cdot sizeof(wstring) + 2 \cdot sizeof(wstring)$ --- хранение строк и их указателей в кадре стека;

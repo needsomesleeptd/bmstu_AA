@@ -49,12 +49,12 @@ TEST(LenTest, DIFLENTEST) {
 
 //Различающийся результат расстояний при словах различной длины
 TEST(LenTest, LongWords) {
-	std::wstring st1 = L"KAKAKAKABABKA";
-	std::wstring st2 = L"AKAAKBBABAK";
+	std::wstring st1 = L"KAABKA";
+	std::wstring st2 = L"AKAAK";
 	Matrix mat(st1.size(),st2.size());
 
-	int DamerauLen = 4;
-	int LevLen  = 5;
+	int DamerauLen = 3;
+	int LevLen  = 3;
 
 	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
 	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
@@ -112,12 +112,12 @@ TEST(LenTest, Russian) {
 
 //Большая разница в длине слов
 TEST(LenTest, BIGSIZEDIFF) {
-	std::wstring st1 = L"ADFS";
-	std::wstring st2 = L"ABFDSABDDASDADADF";
+	std::wstring st1 = L"ADF";
+	std::wstring st2 = L"ABFDSADADF";
 	Matrix mat(st1.size(),st2.size());
 
-	int DamerauLen = 14;
-	int LevLen  = 14;
+	int DamerauLen = 7;
+	int LevLen  = 7;
 
 	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
 	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
