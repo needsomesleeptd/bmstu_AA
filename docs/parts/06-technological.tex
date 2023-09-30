@@ -39,7 +39,7 @@
     }
 \end{lstlisting}
 
-\begin{lstlisting}[label=lst:damer_matr,caption=Метод нахождения расстояния Дамерау-Левенштейна с использованием матрицы]
+\begin{lstlisting}[label=lst:damer_matr,caption=Метод нахождения расстояния Дамерау---Левенштейна с использованием матрицы]
     size_t Matrix::findMatrixDistDamerau(const std::wstring& st1, const std::wstring& st2)
     {
         int n = st1.size() + 1;
@@ -73,7 +73,7 @@
     }
 \end{lstlisting}
 
-\begin{lstlisting}[label=lst:damer_rec,caption=Функция нахождения расстояния Дамерау-Левенштейна с использованием рекурсии]
+\begin{lstlisting}[label=lst:damer_rec,caption=Функция нахождения расстояния Дамерау---Левенштейна с использованием рекурсии]
     size_t RecurseDistDamerau(const std::wstring& st1, const std::wstring& st2, int size1, int size2)
     {
         if (size1 == 0)
@@ -99,7 +99,7 @@
     }
 \end{lstlisting}
 
-\begin{lstlisting}[label=lst:damer_rec_mem,caption=Функция нахождения расстояния Дамерау-Левенштейна с использованием рекурсии c мемоизацией]
+\begin{lstlisting}[label=lst:damer_rec_mem,caption=Функция нахождения расстояния Дамерау---Левенштейна с использованием рекурсии c мемоизацией]
     size_t RecurseDistMemDamerau(const std::wstring& st1,
 	const std::wstring& st2,
 	int lastIndex1,
@@ -141,7 +141,7 @@
     }
 \end{lstlisting}
 
-\begin{lstlisting}[label=lst:damer_rec_mem_meth, caption=Метод нахождения расстояния Дамерау-Левенштейна с использованием функции \ref{lst:damer_rec_mem}]
+\begin{lstlisting}[label=lst:damer_rec_mem_meth, caption=Метод нахождения расстояния Дамерау---Левенштейна с использованием функции \ref{lst:damer_rec_mem}]
     const int INF = 1e8;
     size_t Matrix::findRecurseDistMemDamerau(const std::wstring& st1, const std::wstring& st2)
     {
@@ -153,7 +153,7 @@
     }
 \end{lstlisting}
 
-\begin{lstlisting}[label=lst:damer_rec_meth, caption=Метод нахождения расстояния Дамерау-Левенштейна с использованием функции \ref{lst:damer_rec}]
+\begin{lstlisting}[label=lst:damer_rec_meth, caption=Метод нахождения расстояния Дамерау---Левенштейна с использованием функции \ref{lst:damer_rec}]
 size_t Matrix::findRecurseDistDamerau(const std::wstring& st1, const std::wstring& st2)
 {
 	return RecurseDistDamerau(st1, st2, st1.size(), st2.size());
@@ -315,7 +315,7 @@ size_t Matrix::findRecurseDistDamerau(const std::wstring& st1, const std::wstrin
 			\hline 
 			&
 			& \multicolumn{1}{c|}{\bfseries Левенштейна} 
-			& \multicolumn{3}{c|}{\bfseries Дамерау-Левенштейна} \\ \cline{3-6}
+			& \multicolumn{3}{c|}{\bfseries Дамерау---Левенштейна} \\ \cline{3-6}
 			
 			\bfseries Строка 1 & \bfseries Строка 2 & \bfseries Итеративный & \bfseries Итеративный
 			
