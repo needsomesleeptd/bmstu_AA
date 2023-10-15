@@ -24,3 +24,4 @@ parts/*.toc
 *.xml
 *.out
 *.aux
+*Zone.Identifier

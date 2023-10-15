@@ -155,7 +155,7 @@
 	\label{eq:dl_rec_memory}
 	(n + m) \cdot (2 \cdot sizeof(wstring\&) + sizeof(int) + 6 \cdot sizeof(size\_t)) + 2 \cdot sizeof(wstring),
 \end{equation}
-где:
+где
 \begin{itemize}
 	\item $2 \cdot sizeof(string)$ --- хранение двух строк;
 	\item $2 \cdot sizeof(int)$ --- хранение размеров рассматриваемых подстрок;
@@ -202,7 +202,7 @@
         + 2 \cdot sizeof(wstring) + sizeof(int) + 3 \cdot sizeof(int),
 	\end{aligned}
 \end{equation}
-где:
+где
 \begin{itemize}
 	\item $sizeof(matrix) + sizeof(matrix\&)$ --- хранение матрицы и ее указателя в кадре стека;
 	\item $2 \cdot sizeof(wstring) + 2 \cdot sizeof(wstring)$ --- хранение строк и их указателей в кадре стека;
