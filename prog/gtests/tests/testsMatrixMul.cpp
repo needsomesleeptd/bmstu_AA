@@ -77,8 +77,8 @@ TEST(MatTest, EQDimTest)
 	Matrix res_std = mat1.dot(mat2);
 	Matrix res_vin = mat1.dot_vin(mat2);
 	Matrix res_vin_opt = mat1.dot_vin_opt(mat2);
-
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_std), true);
+
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
 
@@ -86,7 +86,7 @@ TEST(MatTest, EQDimTest)
 
 
 //Различающийся результат расстояний при словах различной длины
-TEST(LenTest, LongWords)
+TEST(MatTest, diffDims)
 {
 	int n = 4;
 	int m = 3;
@@ -121,19 +121,33 @@ TEST(LenTest, LongWords)
 }
 
 //Тестирование подобное тесту на русском языке
-TEST(LenTest, English)
+TEST(MatTest, n_odd_dims)
 {
+	int n = 2;
+	int m = 2;
+	int k = 2;
+	Matrix mat1(n, m);
+	Matrix mat2(m, k);
 
-}
+	mat1._table = {{ 1, 2 },
+	               { 3, 4 }
+	};
 
-//Использование русских букв
-TEST(LenTest, Russian)
-{
+	mat2._table = {{ 1, 0 },
+	               { 0, 1 }
+	};
+	Matrix ref_mat(n, k);
+	ref_mat._table = {{ 1, 2 },
+	                  { 3, 4 }
+	};
+	Matrix res_std = mat1.dot(mat2);
+	Matrix res_vin = mat1.dot_vin(mat2);
+	Matrix res_vin_opt = mat1.dot_vin_opt(mat2);
 
-}
+	Matrix res_shtr = mat1.dot_shtrassen(mat2);
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_std), true);
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin), true);
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_shtr), true);
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
+};
 
-//Большая разница в длине слов
-TEST(LenTest, BIGSIZEDIFF)
-{
-
-}
