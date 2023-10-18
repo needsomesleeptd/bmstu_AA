@@ -120,7 +120,6 @@ TEST(MatTest, diffDims)
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
 }
 
-//Тестирование подобное тесту на русском языке
 TEST(MatTest, n_odd_dims)
 {
 	int n = 2;
@@ -151,3 +150,32 @@ TEST(MatTest, n_odd_dims)
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
 };
 
+
+TEST(MatTest, OneDim)
+{
+	int n = 1;
+	int m = 3;
+	int k = 1;
+	Matrix mat1(n, m);
+	Matrix mat2(m, k);
+
+	mat1._table = {
+		{ 1, 2, 3 }
+	};
+	mat2._table = {
+		{ -10 },
+		{ 2 },
+		{ 3 }
+	};
+	Matrix ref_mat(n, k);
+	ref_mat._table = {
+		{ 3 }
+	};
+	Matrix res_std = mat1.dot(mat2);
+	Matrix res_vin = mat1.dot_vin(mat2);
+	Matrix res_vin_opt = mat1.dot_vin_opt(mat2);
+
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_std), true);
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin), true);
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
+}

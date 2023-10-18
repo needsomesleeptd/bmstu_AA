@@ -41,27 +41,32 @@ Matrix Matrix::dot(const Matrix& other)
 }
 Matrix Matrix::dot_vin(const Matrix& other)
 {
-	//size_t d = other._n / 2;
-	Matrix mat_res = Matrix(this->_n, other._m);
-	std::vector<int> rowFactor(this->_n);
-	std::vector<int> columnFactor(other._m);
-	for (size_t i = 0; i < rowFactor.size(); i++)
+
+	size_t n = this->_table.size();
+	size_t m = other._table.size();
+	size_t t = other._table[0].size();
+
+	Matrix mat_res = Matrix(n, t);
+	std::vector<int> rowFactor(n);
+	std::vector<int> columnFactor(t);
+	bool isEvenColumns = (m % 2 ==0);
+	for (size_t i = 0; i < n; i++)
 	{
-		for (size_t j = 0; j < this->_m / 2; j++)
+		for (size_t j = 0; j < m / 2; j++)
 			rowFactor[i] = rowFactor[i] + this->_table[i][2 * j + 1] * this->_table[i][2 * j];
 	}
 
-	for (size_t i = 0; i < columnFactor.size(); i++)
+	for (size_t i = 0; i < t; i++)
 	{
-		for (size_t j = 0; j < other._n / 2; j++)
+		for (size_t j = 0; j < m / 2; j++)
 			columnFactor[i] = columnFactor[i] + other._table[2 * j + 1][i] * other._table[2 * j][i];
 	}
 
-	for (size_t i = 0; i < this->_n; i++)
-		for (size_t j = 0; j < other._m; j++)
+	for (size_t i = 0; i < n; i++)
+		for (size_t j = 0; j < t; j++)
 		{
-			mat_res._table[i][j] = -rowFactor[i] - columnFactor[i];
-			for (size_t k = 0; k < this->_m / 2; k++)
+			mat_res._table[i][j] = -rowFactor[i] - columnFactor[j];
+			for (size_t k = 0; k < m / 2; k++)
 			{
 				mat_res._table[i][j] = mat_res._table[i][j] + (this->_table[i][2 * k + 1] + other._table[2 * k][j])
 					* (this->_table[i][2 * k] + other._table[2 * k + 1][j]);
@@ -69,39 +74,40 @@ Matrix Matrix::dot_vin(const Matrix& other)
 			}
 		}
 
-	if (this->_m % 2 != 0)
-		for (size_t i = 0; i < this->_n; i++)
-			for (size_t j = 0; j < other._m; j++)
-				mat_res._table[i][j] =
-					mat_res._table[i][j] + this->_table[i][this->_m - 1] * other._table[other._n - 1][j];
+	if (!isEvenColumns)
+		for (size_t i = 0; i < n; i++)
+			for (size_t j = 0; j < t; j++)
+				mat_res._table[i][j] = mat_res._table[i][j] + this->_table[i][m - 1] * other._table[m - 1][j];
 
 	return mat_res;
 }
 Matrix Matrix::dot_vin_opt(const Matrix& other)
 {
-	size_t d = other._n / 2;
-	Matrix mat_res = Matrix(this->_n, other._m);
-	std::vector<int> rowFactor(this->_n);
-	std::vector<int> columnFactor(other._m);
-	for (size_t i = 0; i < rowFactor.size(); i++)
+	size_t n = this->_table.size();
+	size_t m = other._table.size();
+	size_t t = other._table[0].size();
+
+	Matrix mat_res = Matrix(n, t);
+	std::vector<int> rowFactor(n);
+	std::vector<int> columnFactor(t);
+	bool isEvenColumns = (m % 2 ==0);
+	for (size_t i = 0; i < n; i++)
 	{
-		rowFactor[i] = this->_table[i][0] * this->_table[i][1];
-		for (size_t j = 1; j < d; j++)
+		for (size_t j = 0; j < m / 2; j++)
 			rowFactor[i] = rowFactor[i] + this->_table[i][2 * j + 1] * this->_table[i][2 * j];
 	}
 
-	for (size_t i = 0; i < columnFactor.size(); i++)
+	for (size_t i = 0; i < t; i++)
 	{
-		columnFactor[i] = other._table[0][i] * other._table[1][i];
-		for (size_t j = 1; j < d; j++)
+		for (size_t j = 0; j < m / 2; j++)
 			columnFactor[i] = columnFactor[i] + other._table[2 * j + 1][i] * other._table[2 * j][i];
 	}
 
-	for (size_t i = 0; i < this->_n; i++)
-		for (size_t j = 0; j < this->_m; j++)
+	for (size_t i = 0; i < n; i++)
+		for (size_t j = 0; j < t; j++)
 		{
-			mat_res._table[i][j] = -rowFactor[i] - columnFactor[i];
-			for (size_t k = 0; k < d; k++)
+			mat_res._table[i][j] = -rowFactor[i] - columnFactor[j];
+			for (size_t k = 0; k < m / 2; k++)
 			{
 				mat_res._table[i][j] = mat_res._table[i][j] + (this->_table[i][2 * k + 1] + other._table[2 * k][j])
 					* (this->_table[i][2 * k] + other._table[2 * k + 1][j]);
@@ -109,11 +115,10 @@ Matrix Matrix::dot_vin_opt(const Matrix& other)
 			}
 		}
 
-	if (this->_n % 2 != 0)
-		for (size_t i = 0; i < this->_n; i++)
-			for (size_t j = 0; j < other._m; j++)
-				mat_res._table[i][j] =
-					mat_res._table[i][j] + this->_table[i][this->_m - 1] * other._table[other._n - 1][j];
+	if (!isEvenColumns)
+		for (size_t i = 0; i < n; i++)
+			for (size_t j = 0; j < t; j++)
+				mat_res._table[i][j] = mat_res._table[i][j] + this->_table[i][m - 1] * other._table[m - 1][j];
 
 	return mat_res;
 }
