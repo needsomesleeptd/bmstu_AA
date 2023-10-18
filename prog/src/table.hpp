@@ -15,7 +15,7 @@ struct Matrix
 	Matrix dot_vin(const Matrix& other);
 	Matrix dot_vin_opt(const Matrix& other);
 	Matrix dot_shtrassen(const Matrix& other);
-	void split_matrix(Matrix &mat1, Matrix& mat2);
+	Matrix shtrassen_extend(std::size_t new_dim) const;
 
 	size_t _n;
 	size_t _m;

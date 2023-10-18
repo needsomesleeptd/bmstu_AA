@@ -44,11 +44,13 @@ TEST(MatTest, OnesMatrixTest)
 	Matrix res_std = mat1.dot(mat2);
 	Matrix res_vin = mat1.dot_vin(mat2);
 	Matrix res_vin_opt = mat1.dot_vin_opt(mat2);
+	Matrix res_shtr = mat1.dot_shtrassen(mat2);
+
 
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_std), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
-
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_shtr), true);
 }
 
 //Тестирование с различными результатами при использовании различных расстояний
@@ -77,10 +79,12 @@ TEST(MatTest, EQDimTest)
 	Matrix res_std = mat1.dot(mat2);
 	Matrix res_vin = mat1.dot_vin(mat2);
 	Matrix res_vin_opt = mat1.dot_vin_opt(mat2);
+	Matrix res_shtr = mat1.dot_shtrassen(mat2);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_std), true);
 
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_shtr), true);
 
 }
 
@@ -114,10 +118,13 @@ TEST(MatTest, diffDims)
 	Matrix res_std = mat1.dot(mat2);
 	Matrix res_vin = mat1.dot_vin(mat2);
 	Matrix res_vin_opt = mat1.dot_vin_opt(mat2);
+	Matrix res_shtr = mat1.dot_shtrassen(mat2);
 
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_std), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_shtr), true);
+
 }
 
 TEST(MatTest, n_odd_dims)
@@ -147,6 +154,7 @@ TEST(MatTest, n_odd_dims)
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_std), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_shtr), true);
+
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
 };
 
@@ -175,7 +183,10 @@ TEST(MatTest, OneDim)
 	Matrix res_vin = mat1.dot_vin(mat2);
 	Matrix res_vin_opt = mat1.dot_vin_opt(mat2);
 
+	Matrix res_shtr = mat1.dot_shtrassen(mat2);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_std), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin), true);
 	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_vin_opt), true);
+
+	ASSERT_EQ(isMatrixiesEqual(ref_mat, res_shtr), true);
 }

@@ -3,8 +3,11 @@
 //
 
 #include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <cassert>
+
 #include "table.hpp"
-#include "cassert"
 
 Matrix::Matrix(int n, int m)
 {
@@ -49,7 +52,7 @@ Matrix Matrix::dot_vin(const Matrix& other)
 	Matrix mat_res = Matrix(n, t);
 	std::vector<int> rowFactor(n);
 	std::vector<int> columnFactor(t);
-	bool isEvenColumns = (m % 2 ==0);
+	bool isEvenColumns = (m % 2 == 0);
 	for (size_t i = 0; i < n; i++)
 	{
 		for (size_t j = 0; j < m / 2; j++)
@@ -90,7 +93,7 @@ Matrix Matrix::dot_vin_opt(const Matrix& other)
 	Matrix mat_res = Matrix(n, t);
 	std::vector<int> rowFactor(n);
 	std::vector<int> columnFactor(t);
-	bool isEvenColumns = (m % 2 ==0);
+	bool isEvenColumns = (m % 2 == 0);
 	for (size_t i = 0; i < n; i++)
 	{
 		for (size_t j = 0; j < m / 2; j++)
@@ -165,13 +168,25 @@ std::vector<std::vector<int>> operator-(const std::vector<std::vector<int>>& mat
 	return result;
 }
 
+Matrix Matrix::shtrassen_extend(std::size_t new_dim) const
+{
+
+	Matrix res_matrix = Matrix(new_dim, new_dim);
+	for (size_t i = 0; i < this->_n; i++)
+		for (size_t j = 0; j < this->_m; j++)
+			res_matrix._table[i][j] = this->_table[i][j];
+
+	return res_matrix;
+}
+
 std::vector<std::vector<int>> strassenMultiply(const std::vector<std::vector<int>>& matrix1,
 	const std::vector<std::vector<int>>& matrix2)
 {
-	size_t n = matrix1.size();
 
+	size_t n = matrix1.size();
 	// Базовый случай для матриц размером 1x1
-	if (n == 1) {
+	if (n == 1)
+	{
 		std::vector<std::vector<int>> result(1, std::vector<int>(1, 0));
 		result[0][0] = matrix1[0][0] * matrix2[0][0];
 		return result;
@@ -189,8 +204,10 @@ std::vector<std::vector<int>> strassenMultiply(const std::vector<std::vector<int
 	std::vector<std::vector<int>> b21(half, std::vector<int>(half, 0));
 	std::vector<std::vector<int>> b22(half, std::vector<int>(half, 0));
 
-	for (size_t i = 0; i < half; i++) {
-		for (size_t j = 0; j < half; j++) {
+	for (size_t i = 0; i < half; i++)
+	{
+		for (size_t j = 0; j < half; j++)
+		{
 			a11[i][j] = matrix1[i][j];
 			a12[i][j] = matrix1[i][j + half];
 			a21[i][j] = matrix1[i + half][j];
@@ -220,8 +237,10 @@ std::vector<std::vector<int>> strassenMultiply(const std::vector<std::vector<int
 
 	// Составление результирующей матрицы
 	std::vector<std::vector<int>> result(n, std::vector<int>(n, 0));
-	for (size_t i = 0; i < half; i++) {
-		for (size_t j = 0; j < half; j++) {
+	for (size_t i = 0; i < half; i++)
+	{
+		for (size_t j = 0; j < half; j++)
+		{
 			result[i][j] = c11[i][j];
 			result[i][j + half] = c12[i][j];
 			result[i + half][j] = c21[i][j];
@@ -234,8 +253,12 @@ std::vector<std::vector<int>> strassenMultiply(const std::vector<std::vector<int
 
 Matrix Matrix::dot_shtrassen(const Matrix& other)
 {
-	std::vector<std::vector<int>> vals = strassenMultiply(this->_table, other._table);
-	Matrix mat(vals.size(),vals[0].size());
+	size_t max_dim = std::max(std::max(this->_n, this->_m), other._m);
+	size_t max_dim2d = pow(2,ceil(log2(max_dim)));
+	Matrix matrix1_scaled = this->shtrassen_extend(max_dim2d);
+	Matrix matrix2_scaled = other.shtrassen_extend(max_dim2d);
+	std::vector<std::vector<int>> vals = strassenMultiply(matrix1_scaled._table, matrix2_scaled._table);
+	Matrix mat(this->_n,other._m);
 	mat._table = vals;
 	return mat;
 }
