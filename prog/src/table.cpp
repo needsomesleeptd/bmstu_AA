@@ -30,6 +30,9 @@ void Matrix::printMatrix()
 }
 Matrix Matrix::dot(const Matrix& other)
 {
+	if (this->_m != other._n)
+		return Matrix(0, 0);
+
 	Matrix mat_res = Matrix(this->_n, other._m);
 	for (size_t i = 0; i < this->_n; i++)
 	{
@@ -44,6 +47,8 @@ Matrix Matrix::dot(const Matrix& other)
 }
 Matrix Matrix::dot_vin(const Matrix& other)
 {
+	if (this->_m != other._n)
+		return Matrix(0, 0);
 
 	size_t n = this->_table.size();
 	size_t m = other._table.size();
@@ -86,6 +91,9 @@ Matrix Matrix::dot_vin(const Matrix& other)
 }
 Matrix Matrix::dot_vin_opt(const Matrix& other)
 {
+	if (this->_m != other._n)
+		return Matrix(0, 0);
+
 	size_t n = this->_table.size();
 	size_t m = other._table.size();
 	size_t t = other._table[0].size();
@@ -253,14 +261,26 @@ std::vector<std::vector<int>> strassenMultiply(const std::vector<std::vector<int
 
 Matrix Matrix::dot_shtrassen(const Matrix& other)
 {
+	if (this->_m != other._n)
+		return Matrix(0, 0);
 	size_t max_dim = std::max(std::max(this->_n, this->_m), other._m);
-	size_t max_dim2d = pow(2,ceil(log2(max_dim)));
+	size_t max_dim2d = pow(2, ceil(log2(max_dim)));
 	Matrix matrix1_scaled = this->shtrassen_extend(max_dim2d);
 	Matrix matrix2_scaled = other.shtrassen_extend(max_dim2d);
 	std::vector<std::vector<int>> vals = strassenMultiply(matrix1_scaled._table, matrix2_scaled._table);
-	Matrix mat(this->_n,other._m);
+	Matrix mat(this->_n, other._m);
 	mat._table = vals;
 	return mat;
+}
+void Matrix::scanMatrix()
+{
+	int val;
+	for (size_t i = 0; i < this->_n; i++)
+		for (size_t j = 0; j < this->_m; j++)
+		{
+			std::cin >> val;
+			this->_table[i][j] = val;
+		}
 }
 
 

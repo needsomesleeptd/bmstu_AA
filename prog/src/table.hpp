@@ -11,6 +11,7 @@ struct Matrix
 	Matrix(int n, int m);
 
 	void printMatrix();
+	void scanMatrix();
 	Matrix dot(const Matrix& other);
 	Matrix dot_vin(const Matrix& other);
 	Matrix dot_vin_opt(const Matrix& other);
