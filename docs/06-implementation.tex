@@ -1,97 +1,410 @@
 \chapter{Технологический раздел}
 
-В данном разделе будут приведены требования к программному обеспечению, средства реализации, листинг кода и функциональные тесты.
+В данной части работы будут описаны средства реализации программы, а также листинги, модульные и функциональные тесты.
 
 \section{Средства реализации}
+Алгоритмы для данной лабораторной работы были реализованы на языке C++, при использовании компилятора gcc версии 10.5.0, так как в стандартной библиотеке приведенного языка
+присутствует функция \texttt{clock\_gettime}, которая (при использовании макропеременной \texttt{CLOCK\_THREAD\_CPUTIME\_ID}) позволяет рассчитать процессорное время конкретного потока \cite{cpp-time}.
 
-Для реализации данной работы был выбран язык \textit{Python}~\cite{python}. Такой выбор обусловлен опытом работы с этим языком программирования. Также данный язык позволяет замерять процессорное время с помощью модуля \textit{time}.
 
-Время работы было замерено с помощью функции \textit{process\_time\_ns()} из модуля \textit{time}~\cite{python-time}.
-
-\section{Сведения о модулях программы}
-
-Данная программа разбита на следующие модули:
-\begin{itemize}
-	\item $main.py$ -- файл, содержащий функцию $main$;
-	\item $algorithms.py$ -- файл, содержащий код всех алгоритмов нахождения расстояний Левенштейна и Дамерау---Левенштейна;
-	\item $compare\_time.py$ -- файл, в котором содержатся функции для замера и вывода времени работы алгоритмов.
-\end{itemize}
 
 \section{Реализация алгоритмов}
 
-В листингах \ref{lst:levmtr.py} -- \ref{lst:dameraylevrec.py} приведены реализации алгоритмов поиска расстояний Левенштейна (только нерекурсивный алгоритм) и Дамерау---Левенштейна (нерекурсивный, рекурсивный). Реализация рекурсивного алгоритма с кешированием представлена в приложении \ref{dlrc}, на листинге \ref{lst:dameraylevreccash.py}.
+Стоит отметить, что все используемые выше алгоритмы реализованы как метода класса $Matrix$, рекурсивные части алгоритмов были вынесены в отдельные функции.
+Листинги исходных кодов программ  \ref{lst:lev_matr}--\ref{lst:damer_rec_meth} приведены в приложении.
 
-\clearpage
-
-\includelistingpretty
-{levmtr.py} % Имя файла с расширением (файл должен быть расположен в директории inc/lst/)
-{python} % Язык программирования (необязательный аргумент)
-{Функция нахождения расстояния Левенштейна с использованием матрицы} % Подпись листинга
-
-\clearpage
-
-\includelistingpretty
-{dameraylevmtr.py} % Имя файла с расширением (файл должен быть расположен в директории inc/lst/)
-{python} % Язык программирования (необязательный аргумент)
-{Функция нахождения расстояния Дамерау---Левенштейна с использованием матрицы} % Подпись листинга
-
-\clearpage
-
-\includelistingpretty
-{dameraylevrec.py} % Имя файла с расширением (файл должен быть расположен в директории inc/lst/)
-{python} % Язык программирования (необязательный аргумент)
-{Функция нахождения расстояния Дамерау---Левенштейна рекурсивно} % Подпись листинга
-
-\clearpage
+\section{Тестирование}
+При написании тестов использовалась библиотека $gtest$, позволяющая писать модульные тесты, которые очень удобны 
+в данном случае. Данные тесты приведены в листинге  \ref{lst:unit_tests}. При реализации данных тестов вычисленные значения
+сравниваются со значениями, заранее известными для соответствующих входных данных, с помощью приведенной библиотеки.
 
 
-
-
-\section{Функциональные тесты}
-
-В таблице \ref{tbl:func_tests} приведены функциональные тесты для алгоритмов вычисления расстояний Левенштейна и Дамерау---Левенштейна. Все тесты пройдены успешно.
+Также данные тесты рассмотрены в таблице \ref{t:unit_tests}.
 
 \begin{table}[ht]
 	\small
 	\begin{center}
 		\begin{threeparttable}
-			\caption{Функциональные тесты}
-			\label{tbl:func_tests}
-			\begin{tabular}{|c|c|c|c|c|c|}
+			\caption{Функциональные тесты для классического алгоритма умножения матриц}
+			\label{t:unit_tests_def}
+			\begin{tabular}{|c|c|c|c|c|}
 				\hline
 				\multicolumn{2}{|c|}{\bfseries Входные данные}
-				& \multicolumn{4}{c|}{\bfseries Расстояние и алгоритм} \\ 
+				& \multicolumn{2}{c|}{\bfseries Результат для классического алгоритма} \\
 				\hline 
+				\bfseries Матрица 1
+				& \bfseries Матрица 2
+				& \bfseries Ожидаемый результат
+				& \bfseries Фактический результат \\
+				\hline
+				$\begin{pmatrix}
+					1 & 2 & 3\\
+					2 & 3 & 4\\
+					4 & 6 & 7
+				\end{pmatrix}$ 
+				&  
+				$\begin{pmatrix}
+					1 & 0 & 0\\
+					0 & 1 & 0\\
+					0 & 0 & 1
+				\end{pmatrix}$
 				&
-				& \multicolumn{1}{c|}{\bfseries Левенштейна} 
-				& \multicolumn{3}{c|}{\bfseries Дамерау---Левенштейна} \\ \cline{3-6}
-				
-				\bfseries Строка 1 & \bfseries Строка 2 & \bfseries Итеративный & \bfseries Итеративный
-				
-				& \multicolumn{2}{c|}{\bfseries Рекурсивный} \\ \cline{5-6}
-				& & & & \bfseries Без кеша & \bfseries С кешом \\
+				$\begin{pmatrix}
+					1 & 2 & 3\\
+					2 & 3 & 4\\
+					4 & 6 & 7
+				\end{pmatrix}$ 
+				&
+				$\begin{pmatrix}
+					1 & 2 & 3\\
+					2 & 3 & 4\\
+					4 & 6 & 7
+				\end{pmatrix}$  \\ 
 				\hline
-				$\lambda$ & $\lambda$ & 0 & 0 & 0 & 0 \\
+				$\begin{pmatrix}
+					1 & 2 & 3\\
+					2 & 3 & 4\\
+					4 & 6 & 7
+				\end{pmatrix}$ 
+				&  
+				$\begin{pmatrix}
+					1 & 2 & 3\\
+					0 & 1 & 4\\
+					5 & 0 & 1
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					16 & 4 & 14\\
+					22 & 7 & 22\\
+					39 & 14 & 43
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					16 & 4 & 14\\
+					22 & 7 & 22\\
+					39 & 14 & 43
+				\end{pmatrix}$ \\ 
 				\hline
-				a & b & 1 & 1 & 1 & 1 \\
+				$\begin{pmatrix}
+				 1& 2& 3 & \\
+				 2& 3& 4 & \\
+				 4& 6& 7 & \\
+				 1& 4& -2 
+				\end{pmatrix}$ 
+				& 
+				$\begin{pmatrix}
+				 1& 2& 3& 0& 7& 8 \\
+				 0& 1& 4& 0& 5& 6 \\
+				 5& 0& 1& 0& 3& 4 
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					16& 4& 14& 0& 26& 32 \\
+					22& 7& 22& 0& 41& 50 \\
+				 	39& 14& 43& 0& 79& 96 \\
+					-9& 6& 17& 0& 21& 24 
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					16& 4& 14& 0& 26& 32 \\
+					22& 7& 22& 0& 41& 50 \\
+					39& 14& 43& 0& 79& 96 \\
+					-9& 6& 17& 0& 21& 24 
+				\end{pmatrix}$ \\ 
 				\hline
-				a & a & 0 & 0 & 0 & 0 \\
+				$\begin{pmatrix}
+					3 & 5\\
+					2 & 1\\
+					9 & 7\\
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					1 & 2 & 3\\
+					4 & 5 & 6 \\
+				\end{pmatrix}$
+				&
+				\text{Сообщение об ошибке} 
+				&
+				\text{Сообщение об ошибке} \\ 
 				\hline
-				кот & скат & 2 & 2 & 2 & 2 \\
+				$\begin{pmatrix}
+					10
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					35
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					350
+				\end{pmatrix}$ 
+				&
+				$\begin{pmatrix}
+					350
+				\end{pmatrix}$ \\ 
 				\hline
-				ab & ba & 2 & 1 & 1 & 1 \\
-				\hline
-				bba & abba & 1 & 1 & 1 & 1 \\
-				\hline
-				aboba & boba & 1 & 1 & 1 & 1 \\
-				\hline
-				abcdef & gh & 6 & 6 & 6 & 6 \\
-				\hline
-				
-			\end{tabular}	
+			\end{tabular}
 		\end{threeparttable}
 	\end{center}
 \end{table}
+
+\begin{table}[ht]
+	\small
+	\begin{center}
+		\begin{threeparttable}
+			\caption{Функциональные тесты для умножения матриц по алгоритму Винограда}
+			\label{t:unit_tests_vin}
+			\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			\multicolumn{2}{|c|}{\bfseries Входные данные}
+			& \multicolumn{2}{c|}{\bfseries Результат для классического алгоритма} \\
+			\hline 
+			\bfseries Матрица 1
+			& \bfseries Матрица 2
+			& \bfseries Ожидаемый результат
+			& \bfseries Фактический результат \\
+			\hline
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				2 & 3 & 4\\
+				4 & 6 & 7
+			\end{pmatrix}$ 
+			&  
+			$\begin{pmatrix}
+				1 & 0 & 0\\
+				0 & 1 & 0\\
+				0 & 0 & 1
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				2 & 3 & 4\\
+				4 & 6 & 7
+			\end{pmatrix}$ 
+			&
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				2 & 3 & 4\\
+				4 & 6 & 7
+			\end{pmatrix}$  \\ 
+			\hline
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				2 & 3 & 4\\
+				4 & 6 & 7
+			\end{pmatrix}$ 
+			&  
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				0 & 1 & 4\\
+				5 & 0 & 1
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				16 & 4 & 14\\
+				22 & 7 & 22\\
+				39 & 14 & 43
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				16 & 4 & 14\\
+				22 & 7 & 22\\
+				39 & 14 & 43
+			\end{pmatrix}$ \\ 
+			\hline
+			$\begin{pmatrix}
+				1& 2& 3 & \\
+				2& 3& 4 & \\
+				4& 6& 7 & \\
+				1& 4& -2 
+			\end{pmatrix}$ 
+			& 
+			$\begin{pmatrix}
+				1& 2& 3& 0& 7& 8 \\
+				0& 1& 4& 0& 5& 6 \\
+				5& 0& 1& 0& 3& 4 
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				16& 4& 14& 0& 26& 32 \\
+				22& 7& 22& 0& 41& 50 \\
+				39& 14& 43& 0& 79& 96 \\
+				-9& 6& 17& 0& 21& 24 
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				16& 4& 14& 0& 26& 32 \\
+				22& 7& 22& 0& 41& 50 \\
+				39& 14& 43& 0& 79& 96 \\
+				-9& 6& 17& 0& 21& 24 
+			\end{pmatrix}$ \\ 
+			\hline
+			$\begin{pmatrix}
+				3 & 5\\
+				2 & 1\\
+				9 & 7\\
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				4 & 5 & 6 \\
+			\end{pmatrix}$
+			&
+			\text{Сообщение об ошибке} 
+			&
+			\text{Сообщение об ошибке} \\ 
+			\hline
+			$\begin{pmatrix}
+				10
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				35
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				350
+			\end{pmatrix}$ 
+			&
+			$\begin{pmatrix}
+				350
+			\end{pmatrix}$ \\ 
+			\hline
+		\end{tabular}
+		\end{threeparttable}
+	\end{center}
+\end{table}
+
+\begin{table}[ht]
+	\small
+	\begin{center}
+		\begin{threeparttable}
+			\caption{Функциональные тесты для классического алгоритма умножения матриц}
+			\label{t:unit_tests_strassen}
+			\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			\multicolumn{2}{|c|}{\bfseries Входные данные}
+			& \multicolumn{2}{c|}{\bfseries Результат для классического алгоритма} \\
+			\hline 
+			\bfseries Матрица 1
+			& \bfseries Матрица 2
+			& \bfseries Ожидаемый результат
+			& \bfseries Фактический результат \\
+			\hline
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				2 & 3 & 4\\
+				4 & 6 & 7
+			\end{pmatrix}$ 
+			&  
+			$\begin{pmatrix}
+				1 & 0 & 0\\
+				0 & 1 & 0\\
+				0 & 0 & 1
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				2 & 3 & 4\\
+				4 & 6 & 7
+			\end{pmatrix}$ 
+			&
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				2 & 3 & 4\\
+				4 & 6 & 7
+			\end{pmatrix}$  \\ 
+			\hline
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				2 & 3 & 4\\
+				4 & 6 & 7
+			\end{pmatrix}$ 
+			&  
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				0 & 1 & 4\\
+				5 & 0 & 1
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				16 & 4 & 14\\
+				22 & 7 & 22\\
+				39 & 14 & 43
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				16 & 4 & 14\\
+				22 & 7 & 22\\
+				39 & 14 & 43
+			\end{pmatrix}$ \\ 
+			\hline
+			$\begin{pmatrix}
+				1& 2& 3 & \\
+				2& 3& 4 & \\
+				4& 6& 7 & \\
+				1& 4& -2 
+			\end{pmatrix}$ 
+			& 
+			$\begin{pmatrix}
+				1& 2& 3& 0& 7& 8 \\
+				0& 1& 4& 0& 5& 6 \\
+				5& 0& 1& 0& 3& 4 
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				16& 4& 14& 0& 26& 32 \\
+				22& 7& 22& 0& 41& 50 \\
+				39& 14& 43& 0& 79& 96 \\
+				-9& 6& 17& 0& 21& 24 
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				16& 4& 14& 0& 26& 32 \\
+				22& 7& 22& 0& 41& 50 \\
+				39& 14& 43& 0& 79& 96 \\
+				-9& 6& 17& 0& 21& 24 
+			\end{pmatrix}$ \\ 
+			\hline
+			$\begin{pmatrix}
+				3 & 5\\
+				2 & 1\\
+				9 & 7\\
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				4 & 5 & 6 \\
+			\end{pmatrix}$
+			&
+			\text{Сообщение об ошибке} 
+			&
+			\text{Сообщение об ошибке} \\ 
+			\hline
+			$\begin{pmatrix}
+				10
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				35
+			\end{pmatrix}$
+			&
+			$\begin{pmatrix}
+				350
+			\end{pmatrix}$ 
+			&
+			$\begin{pmatrix}
+				350
+			\end{pmatrix}$ \\ 
+			\hline
+		\end{tabular}
+		\end{threeparttable}
+	\end{center}
+\end{table}
+
+Все тесты были успешно пройдены.
+
+
 
 \section*{Вывод}
 
