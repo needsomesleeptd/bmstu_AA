@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
+#include "timings.h"
 #include "table.hpp"
-#include <locale>
 
 std::string menu = "Menu:\n"
                    "0)Exit\n"
@@ -13,6 +13,8 @@ std::string menu = "Menu:\n"
 
 int main()
 {
+
+	getTimeResults(1,1000,10,100);
 	int request = -1;
 	while (request != 0)
 	{

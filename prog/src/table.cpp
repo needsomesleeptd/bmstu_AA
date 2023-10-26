@@ -28,7 +28,7 @@ void Matrix::printMatrix()
 		std::wcout << std::endl;
 	}
 }
-Matrix Matrix::dot(const Matrix& other)
+Matrix Matrix::dot(const Matrix& other) const
 {
 	if (this->_m != other._n)
 		return Matrix(0, 0);
@@ -45,7 +45,7 @@ Matrix Matrix::dot(const Matrix& other)
 	}
 	return mat_res;
 }
-Matrix Matrix::dot_vin(const Matrix& other)
+Matrix Matrix::dot_vin(const Matrix& other) const
 {
 	if (this->_m != other._n)
 		return Matrix(0, 0);
@@ -89,7 +89,7 @@ Matrix Matrix::dot_vin(const Matrix& other)
 
 	return mat_res;
 }
-Matrix Matrix::dot_vin_opt(const Matrix& other)
+Matrix Matrix::dot_vin_opt(const Matrix& other) const
 {
 	if (this->_m != other._n)
 		return Matrix(0, 0);
@@ -97,6 +97,7 @@ Matrix Matrix::dot_vin_opt(const Matrix& other)
 	size_t n = this->_table.size();
 	size_t m = other._table.size();
 	size_t t = other._table[0].size();
+	size_t half_m = m / 2;
 
 	Matrix mat_res = Matrix(n, t);
 	std::vector<int> rowFactor(n);
@@ -104,24 +105,24 @@ Matrix Matrix::dot_vin_opt(const Matrix& other)
 	bool isEvenColumns = (m % 2 == 0);
 	for (size_t i = 0; i < n; i++)
 	{
-		for (size_t j = 0; j < m / 2; j++)
-			rowFactor[i] = rowFactor[i] + this->_table[i][2 * j + 1] * this->_table[i][2 * j];
+		for (size_t j = 0; j < half_m; j++)
+			rowFactor[i] += this->_table[i][(j << 1) + 1] * this->_table[i][j << 1];
 	}
 
 	for (size_t i = 0; i < t; i++)
 	{
-		for (size_t j = 0; j < m / 2; j++)
-			columnFactor[i] = columnFactor[i] + other._table[2 * j + 1][i] * other._table[2 * j][i];
+		for (size_t j = 0; j < half_m; j++)
+			columnFactor[i] += other._table[(j << 1) + 1][i] * other._table[j << 1][i];
 	}
 
 	for (size_t i = 0; i < n; i++)
 		for (size_t j = 0; j < t; j++)
 		{
 			mat_res._table[i][j] = -rowFactor[i] - columnFactor[j];
-			for (size_t k = 0; k < m / 2; k++)
+			for (size_t k = 0; k < half_m; k++)
 			{
-				mat_res._table[i][j] = mat_res._table[i][j] + (this->_table[i][2 * k + 1] + other._table[2 * k][j])
-					* (this->_table[i][2 * k] + other._table[2 * k + 1][j]);
+				mat_res._table[i][j] += (this->_table[i][(k << 1) + 1] + other._table[k << 1][j])
+					* (this->_table[i][k << 1] + other._table[(k << 1) + 1][j]);
 
 			}
 		}
@@ -129,7 +130,7 @@ Matrix Matrix::dot_vin_opt(const Matrix& other)
 	if (!isEvenColumns)
 		for (size_t i = 0; i < n; i++)
 			for (size_t j = 0; j < t; j++)
-				mat_res._table[i][j] = mat_res._table[i][j] + this->_table[i][m - 1] * other._table[m - 1][j];
+				mat_res._table[i][j] += this->_table[i][m - 1] * other._table[m - 1][j];
 
 	return mat_res;
 }
@@ -259,7 +260,7 @@ std::vector<std::vector<int>> strassenMultiply(const std::vector<std::vector<int
 	return result;
 }
 
-Matrix Matrix::dot_shtrassen(const Matrix& other)
+Matrix Matrix::dot_shtrassen(const Matrix& other) const
 {
 	if (this->_m != other._n)
 		return Matrix(0, 0);

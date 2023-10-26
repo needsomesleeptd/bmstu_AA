@@ -12,10 +12,10 @@ struct Matrix
 
 	void printMatrix();
 	void scanMatrix();
-	Matrix dot(const Matrix& other);
-	Matrix dot_vin(const Matrix& other);
-	Matrix dot_vin_opt(const Matrix& other);
-	Matrix dot_shtrassen(const Matrix& other);
+	Matrix dot(const Matrix& other) const;
+	Matrix dot_vin(const Matrix& other) const;
+	Matrix dot_vin_opt(const Matrix& other) const;
+	Matrix dot_shtrassen(const Matrix& other) const;
 	Matrix shtrassen_extend(std::size_t new_dim) const;
 
 	size_t _n;
