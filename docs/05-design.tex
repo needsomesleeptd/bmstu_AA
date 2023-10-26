@@ -176,7 +176,7 @@
 	f_{rec} =
 	\begin{cases}
 		dir, & \text{ при $N = sizeLimit$}\\
-		div(N) +\sum_{1}^{smaller}{rec(smallSize[i])} + com(N), & \text{при $N> sizeLimit$}
+		div(N) +\sum_{1}^{smaller}{rec(lesSize[i])} + com(N), & \text{при $N> sizeLimit$}
 	\end{cases}
 \end{equation}
 В формлуе (\ref{for:rec}), означают соответственно:
@@ -189,7 +189,43 @@
 \end{enumerate}
 
 
-В случае 
+В случае алгоритма Штрассена:
+\begin{enumerate}
+	\item $dir  = 9$;
+	\item $com =  2 + \frac{n}{2} \cdot (2 + 2 + \frac{n}{2} \cdot (2 +  (5 + 6 + 6 + 7))) = 2 +2n + \frac{13}{2}n^2$;
+	\item $div$ В данном случае состоит из деления матриц на подматрицы.
+	
+	$div_ = 2 + \frac{n}{2} \cdot (2 + 2 + \frac{n}{2} \cdot (2 + 2 \cdot (5 + 6 + 6 + 7))) = 2 + 2n + \frac{25}{2}n^{2}$;
+
+	\item $rec(n) = mat_{op} \cdot 18$,где $mat_{op} = 2 + \frac{n}{2} \cdot (2 + 2 + \frac{n}{2} \cdot (2 +5))$, операция сложения/вычитания матриц.
+\end{enumerate}
+
+
+
+\begin{equation}
+	\label{for:rec_strassen}
+	f_{rec} =
+	\begin{cases}
+		9, & \text{ при $N = 1$}\\
+		 2+2n+ \frac{25}{2}n^2 +\sum_{1}^{\frac{N}{4}}{rec(\frac{N}{4})} + 2 +2n + \frac{13}{2}n^2, & \text{при $N> sizeLimit$}
+	\end{cases}
+\end{equation}
+
+\begin{equation}
+	\label{for:rec_strassen_fixed}
+	f_{rec} =
+	\begin{cases}
+		9, & \text{ при $N = 1$}\\
+		19n^2+4n+4 + \sum_{1}^{\frac{N}{4}}{rec(\frac{N}{4})}, & \text{при $N> sizeLimit$}
+	\end{cases}
+\end{equation}
+
+Таким образом трудоемкость расчитывается по формуле (\ref{for:rec_strassen}) или (\ref{for:rec_strassen_fixed}).
+
+
+
+
+
 
 \section{Структуры данных}
 
