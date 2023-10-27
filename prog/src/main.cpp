@@ -14,7 +14,7 @@ std::string menu = "Menu:\n"
 int main()
 {
 
-	getTimeResults(1,1000,10,100);
+	
 	int request = -1;
 	while (request != 0)
 	{
