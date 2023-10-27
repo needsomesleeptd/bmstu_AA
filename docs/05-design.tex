@@ -195,32 +195,28 @@
 	\item $com =  2 + \frac{n}{2} \cdot (2 + 2 + \frac{n}{2} \cdot (2 +  (5 + 6 + 6 + 7))) = 2 +2n + \frac{13}{2}n^2$;
 	\item $div$ В данном случае состоит из деления матриц на подматрицы.
 	
-	$div_ = 2 + \frac{n}{2} \cdot (2 + 2 + \frac{n}{2} \cdot (2 + 2 \cdot (5 + 6 + 6 + 7))) = 2 + 2n + \frac{25}{2}n^{2}$;
+	$div = 2 + \frac{n}{2} \cdot (2 + 2 + \frac{n}{2} \cdot (2 + 2 \cdot (5 + 6 + 6 + 7))) +10 \cdot mat_{op} = 4 + 22n + 30n^{2}$;
 
 	\item $rec(n) = mat_{op} \cdot 18$,где $mat_{op} = 2 + \frac{n}{2} \cdot (2 + 2 + \frac{n}{2} \cdot (2 +5))$, операция сложения/вычитания матриц.
 \end{enumerate}
 
 
 
-\begin{equation}
-	\label{for:rec_strassen}
-	f_{rec} =
-	\begin{cases}
-		9, & \text{ при $N = 1$}\\
-		 2+2n+ \frac{25}{2}n^2 +\sum_{1}^{\frac{N}{4}}{rec(\frac{N}{4})} + 2 +2n + \frac{13}{2}n^2, & \text{при $N> sizeLimit$}
-	\end{cases}
-\end{equation}
 
 \begin{equation}
 	\label{for:rec_strassen_fixed}
 	f_{rec} =
 	\begin{cases}
 		9, & \text{ при $N = 1$}\\
-		19n^2+4n+4 + \sum_{1}^{\frac{N}{4}}{rec(\frac{N}{4})}, & \text{при $N> sizeLimit$}
+		49n^2+26n+8 + \sum_{1}^{7}{rec(\frac{N}{2})}, & \text{при $N> 1$}
 	\end{cases}
 \end{equation}
 
-Таким образом трудоемкость расчитывается по формуле (\ref{for:rec_strassen}) или (\ref{for:rec_strassen_fixed}).
+Таким образом трудоемкость рассчитывается по формуле  (\ref{for:rec_strassen_fixed}). Стоит отметить, что Штрассен в своей работе оптимизирует умножение только квадратных матриц с порядком кратным двум, поэтому в реализации \ref{lst:stras}, изначально матрицы приводятся к порядку, равному наименьшей степени двойки большей исходного порядка. Таким образом высота рекурсивного дерева будет равна $\log_{2}{N}$. При учете предыдущего условия трудоемкость алгоритма Щтрассена вычисляется по формуле (\ref{for:rec_strasseN_comp}).
+\begin{equation}
+	\label{for:rec_strasseN_comp}
+	T = 7^{\log_{2}{N}}\cdot 9+ \sum_{0}^{\log_{2}{N} - 1}{7^{i} \cdot (49(\frac{N}{2^i})^2 + 4(\frac{N}{2^i})+ 4)}
+\end{equation}
 
 
 
