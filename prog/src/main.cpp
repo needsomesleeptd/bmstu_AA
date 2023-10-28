@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "table.hpp"
+#include "sort.hpp"
 #include <locale>
 #include "timings.h"
 int main()

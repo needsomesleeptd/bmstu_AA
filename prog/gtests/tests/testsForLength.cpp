@@ -2,7 +2,7 @@
 // Created by Андрей on 10/09/2023.
 //
 #include <gtest/gtest.h>
-#include "../../src/table.hpp"
+#include "../../src/sort.hpp"
 
 //Тестирование при словах одинаковой длины
 TEST(LenTest, EQLENTEST) {
