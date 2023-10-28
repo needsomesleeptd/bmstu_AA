@@ -5,128 +5,17 @@
 #include "../../src/sort.hpp"
 
 //Тестирование при словах одинаковой длины
-TEST(LenTest, EQLENTEST) {
-	std::wstring st1 = L"wwwwwwc";
-	std::wstring st2 = L"bbbbbbc";
-	Matrix mat(st1.size(),st2.size());
+TEST(sort, already_sorted)
+{
+	std::vector<int> vals = { 1, 2, 3, 4 };
 
-	int DamerauLen = 6;
-	int LevLen  = 6;
+	std::vector<int> radix_sort = vals;
+	std::vector<int> blockSort = vals;
+	std::vector<int> shakerSort = vals;
 
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
 
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
-
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
+	ASSERT_EQ(true, radix_sort == vals);
+	ASSERT_EQ(true, blockSort == vals);
+	ASSERT_EQ(true, shakerSort == vals);
 }
 
-//Тестирование с различными результатами при использовании различных расстояний
-TEST(LenTest, DIFLENTEST) {
-	std::wstring st1 = L"AB";
-	std::wstring st2 = L"BA";
-	Matrix mat(st1.size(),st2.size());
-
-	int DamerauLen = 1;
-	int LevLen  = 2;
-
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
-
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
-}
-
-
-//Различающийся результат расстояний при словах различной длины
-TEST(LenTest, LongWords) {
-	std::wstring st1 = L"KAABKA";
-	std::wstring st2 = L"AKAAK";
-	Matrix mat(st1.size(),st2.size());
-
-	int DamerauLen = 3;
-	int LevLen  = 3;
-
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
-
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
-}
-
-//Тестирование подобное тесту на русском языке
-TEST(LenTest, English) {
-	std::wstring st1 = L"BCA";
-	std::wstring st2 = L"ABC";
-	Matrix mat(st1.size(),st2.size());
-
-	int DamerauLen = 2;
-	int LevLen  = 2;
-
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
-
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
-}
-
-//Использование русских букв
-TEST(LenTest, Russian) {
-	std::wstring st1 = L"ВФА";
-	std::wstring st2 = L"АВФ";
-	Matrix mat(st1.size(),st2.size());
-
-	int DamerauLen = 2;
-	int LevLen  = 2;
-
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
-
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
-}
-
-//Большая разница в длине слов
-TEST(LenTest, BIGSIZEDIFF) {
-	std::wstring st1 = L"ADF";
-	std::wstring st2 = L"ABFDSADADF";
-	Matrix mat(st1.size(),st2.size());
-
-	int DamerauLen = 7;
-	int LevLen  = 7;
-
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
-
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
-
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
-}

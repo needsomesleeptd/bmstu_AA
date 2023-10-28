@@ -5,25 +5,99 @@
 #include <iostream>
 #include "sort.hpp"
 #include "cassert"
+#include <algorithm>
 
-int block_sort(std::vector<int>& p, int bucket_count)
+void blockSort(std::vector<int>& arr, int block_size)
 {
-	std::vector<int> temp[bucket_count];
+	int n = arr.size();
+	int num_blocks = (n + block_size - 1) / block_size;
 
-	for (int i = 0; i < bucket_count; i++)
+	for (int i = 0; i < num_blocks; i++)
 	{
-		int bi = bucket_count * p[i]; // Index in bucket
-		temp[bi].push_back(p[i]);
+		int start = i * block_size;
+		int end = std::min(start + block_size, n);
+		std::sort(arr.begin() + start, arr.begin() + end);
+	}
+}
+
+void shakerSort(std::vector<int>& arr)
+{
+	int control = arr.size() - 1;
+	int left = 0, right = control;
+	do
+	{
+		for (int i = left; i < right; i++)
+		{
+			if (arr[i] > arr[i + 1])
+			{
+				std::swap(arr[i], arr[i + 1]);
+				control = i;
+			}
+		}
+		right = control;
+		for (int i = right; i > left; i--)
+		{
+			if (arr[i] < arr[i - 1])
+			{
+				std::swap(arr[i], arr[i - 1]);
+				control = i;
+			}
+		}
+		left = control;
+	} while (left < right);
+}
+
+int getMax(const std::vector<int>& arr)
+{
+	int mx = arr[0];
+	for (size_t i = 1; i < arr.size(); i++)
+		if (arr[i] > mx)
+			mx = arr[i];
+	return mx;
+}
+
+void countSort(std::vector<int> &arr, int exp)
+{
+
+	// Output array
+	size_t n = arr.size();
+	int output[n];
+	int  count[10] = { 0 };
+	size_t i;
+
+	// Store count of occurrences
+	// in count[]
+	for (i = 0; i < n; i++)
+		count[(arr[i] / exp) % 10]++;
+
+	// Change count[i] so that count[i]
+	// now contains actual position
+	// of this digit in output[]
+	for (i = 1; i < 10; i++)
+		count[i] += count[i - 1];
+
+	// Build the output array
+	for (i = n - 1; i >= 0; i--)
+	{
+		output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+		count[(arr[i] / exp) % 10]--;
 	}
 
-	// 3) Sort individual buckets
-	for (int i = 0; i < bucket_count; i++)
-		block_sort(temp[i],bucket_count);
-
-	// 4) Concatenate all buckets into arr[]
-	int index = 0;
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < b[i].size(); j++)
-			arr[index++] = b[i][j];
+	// Copy the output array to arr[],
+	// so that arr[] now contains sorted
+	// numbers according to current digit
+	for (i = 0; i < n; i++)
+		arr[i] = output[i];
 }
+
+// The main function to that sorts arr[]
+// of size n using Radix Sort
+void radixsort(std::vector<int> &arr)
+{
+
+	int m = getMax(arr);
+	for (int exp = 1; m / exp > 0; exp *= 10)
+		countSort(arr, exp);
+}
+
 
