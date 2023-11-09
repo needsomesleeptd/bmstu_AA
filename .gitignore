@@ -34,3 +34,4 @@
 #other stuff
 cmake-build-debug/
 .idea
+*fdb_latexmk

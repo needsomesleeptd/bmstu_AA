@@ -111,14 +111,11 @@ TEST(sort, positives_negatives)
 	shakerSort(shaker_sort);
 	radixSort(radix_sort);
 
-
 	ASSERT_EQ(true, radix_sort == ref);
 	ASSERT_EQ(true, block_sort == ref);
 	ASSERT_EQ(true, shaker_sort == ref);
 
 }
-
-
 
 TEST(sort, duplicates)
 {
@@ -133,6 +130,24 @@ TEST(sort, duplicates)
 	shakerSort(shaker_sort);
 	radixSort(radix_sort);
 
+	ASSERT_EQ(true, radix_sort == ref);
+	ASSERT_EQ(true, block_sort == ref);
+	ASSERT_EQ(true, shaker_sort == ref);
+
+}
+
+TEST(sort, big_numbers)
+{
+	std::vector<int> vals = { -1231, 444411, -12, 13, 24, 437, 8, 9, 3211, -10,0 };
+
+	std::vector<int> ref = { -1231, -12, -10,0, 8, 9, 13, 24, 437, 3211, 444411 };
+	std::vector<int> radix_sort = vals;
+	std::vector<int> block_sort = vals;
+	std::vector<int> shaker_sort = vals;
+
+	blockSort(block_sort, 2);
+	shakerSort(shaker_sort);
+	radixSort(radix_sort);
 
 	ASSERT_EQ(true, radix_sort == ref);
 	ASSERT_EQ(true, block_sort == ref);
