@@ -7,18 +7,57 @@
 #include "cassert"
 #include <algorithm>
 
-void blockSort(std::vector<int>& arr, int block_size)
-{
-	int n = arr.size();
-	int num_blocks = (n + block_size - 1) / block_size;
 
-	for (int i = 0; i < num_blocks; i++)
-	{
-		int start = i * block_size;
-		int end = std::min(start + block_size, n);
-		std::sort(arr.begin() + start, arr.begin() + end);
+
+
+void blockSort(std::vector<int> &arr, int blockSize)
+{
+	std::vector<std::vector<int> > blocks;
+
+	// Divide the input array into blocks of size blockSize
+	for (size_t i = 0; i < arr.size(); i += blockSize) {
+		std::vector<int> block;
+
+		for (size_t j = i; j < i + blockSize && j < arr.size();
+		     j++) {
+			block.push_back(arr[j]);
+		}
+
+		// Sort each block and append it to the list of
+		// sorted blocks
+		//vector<int> second(block.begin(), block.begin() + 1);
+		shakerSort(block);
+
+		blocks.push_back(block);
 	}
+
+	// Merge the sorted blocks into a single sorted list
+	std::vector<int> result;
+	while (!blocks.empty()) {
+		// Find the smallest element in the first block of
+		// each sorted block
+		int minIdx = 0;
+		for (size_t i = 1; i < blocks.size(); i++) {
+			if (blocks[i][0] < blocks[minIdx][0]) {
+				minIdx = i;
+			}
+		}
+
+		// Remove the smallest element and append it to the
+		// result list
+		result.push_back(blocks[minIdx][0]);
+		blocks[minIdx].erase(blocks[minIdx].begin());
+
+		// If the block is now empty, remove it from the
+		// list of sorted blocks
+		if (blocks[minIdx].empty()) {
+			blocks.erase(blocks.begin() + minIdx);
+		}
+	}
+
+	arr = result;
 }
+
 
 void shakerSort(std::vector<int>& arr)
 {
@@ -47,55 +86,43 @@ void shakerSort(std::vector<int>& arr)
 	} while (left < right);
 }
 
-int getMax(const std::vector<int>& arr)
+int getMaxAbs(const std::vector<int>& arr)
 {
-	int mx = arr[0];
+	int mx = abs(arr[0]);
 	for (size_t i = 1; i < arr.size(); i++)
-		if (arr[i] > mx)
+		if (arr[i] > abs(mx))
 			mx = arr[i];
 	return mx;
 }
 
-void countSort(std::vector<int> &arr, int exp)
+void countSort(std::vector<int>& arr, int exp)
 {
 
-	// Output array
-	size_t n = arr.size();
+	int n = arr.size();
 	int output[n];
-	int  count[10] = { 0 };
-	size_t i;
+	int count[20] = { 0 };
+	int i;
 
-	// Store count of occurrences
-	// in count[]
 	for (i = 0; i < n; i++)
-		count[(arr[i] / exp) % 10]++;
+		count[(arr[i] / exp) % 10 + 9]++;
 
-	// Change count[i] so that count[i]
-	// now contains actual position
-	// of this digit in output[]
-	for (i = 1; i < 10; i++)
+	for (i = 1; i < 20; i++)
 		count[i] += count[i - 1];
 
-	// Build the output array
 	for (i = n - 1; i >= 0; i--)
 	{
-		output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-		count[(arr[i] / exp) % 10]--;
+		output[count[(arr[i] / exp) % 10 + 9] - 1] = arr[i];
+		count[(arr[i] / exp) % 10 + 9]--;
 	}
 
-	// Copy the output array to arr[],
-	// so that arr[] now contains sorted
-	// numbers according to current digit
 	for (i = 0; i < n; i++)
 		arr[i] = output[i];
 }
 
-// The main function to that sorts arr[]
-// of size n using Radix Sort
-void radixsort(std::vector<int> &arr)
+void radixSort(std::vector<int>& arr)
 {
 
-	int m = getMax(arr);
+	int m = getMaxAbs(arr);
 	for (int exp = 1; m / exp > 0; exp *= 10)
 		countSort(arr, exp);
 }
