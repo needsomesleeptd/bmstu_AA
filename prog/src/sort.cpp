@@ -7,62 +7,53 @@
 #include "cassert"
 #include <algorithm>
 
-
-
-
-void blockSort(std::vector<int> &arr, int blockSize)
+void blockSort(std::vector<int>& arr, int blockSize)
 {
 	std::vector<std::vector<int> > blocks;
 
-	// Divide the input array into blocks of size blockSize
-	for (size_t i = 0; i < arr.size(); i += blockSize) {
+	for (size_t i = 0; i < arr.size(); i += blockSize)
+	{
 		std::vector<int> block;
 
 		for (size_t j = i; j < i + blockSize && j < arr.size();
-		     j++) {
+		     j++)
+		{
 			block.push_back(arr[j]);
 		}
 
-		// Sort each block and append it to the list of
-		// sorted blocks
-		//vector<int> second(block.begin(), block.begin() + 1);
 		shakerSort(block);
-
 		blocks.push_back(block);
 	}
 
-	// Merge the sorted blocks into a single sorted list
-	std::vector<int> result;
-	while (!blocks.empty()) {
-		// Find the smallest element in the first block of
-		// each sorted block
+	int arrIndex = 0;
+	while (!blocks.empty())
+	{
+
 		int minIdx = 0;
-		for (size_t i = 1; i < blocks.size(); i++) {
-			if (blocks[i][0] < blocks[minIdx][0]) {
+		for (size_t i = 1; i < blocks.size(); i++)
+		{
+			if (blocks[i][0] < blocks[minIdx][0])
+			{
 				minIdx = i;
 			}
 		}
 
-		// Remove the smallest element and append it to the
-		// result list
-		result.push_back(blocks[minIdx][0]);
+		arr[arrIndex] = blocks[minIdx][0];
+		arrIndex++;
 		blocks[minIdx].erase(blocks[minIdx].begin());
 
-		// If the block is now empty, remove it from the
-		// list of sorted blocks
-		if (blocks[minIdx].empty()) {
+		if (blocks[minIdx].empty())
+		{
 			blocks.erase(blocks.begin() + minIdx);
 		}
 	}
 
-	arr = result;
 }
-
 
 void shakerSort(std::vector<int>& arr)
 {
-	int control = arr.size() - 1;
-	int left = 0, right = control;
+	//int control = arr.size() - 1;
+	int left = 0, right = arr.size() - 1;
 	do
 	{
 		for (int i = left; i < right; i++)
@@ -70,19 +61,19 @@ void shakerSort(std::vector<int>& arr)
 			if (arr[i] > arr[i + 1])
 			{
 				std::swap(arr[i], arr[i + 1]);
-				control = i;
+				//control = i;
 			}
 		}
-		right = control;
+		right -= 1;
 		for (int i = right; i > left; i--)
 		{
 			if (arr[i] < arr[i - 1])
 			{
 				std::swap(arr[i], arr[i - 1]);
-				control = i;
+				//control = i;
 			}
 		}
-		left = control;
+		left += 1;
 	} while (left < right);
 }
 
@@ -117,6 +108,7 @@ void countSort(std::vector<int>& arr, int exp)
 
 	for (i = 0; i < n; i++)
 		arr[i] = output[i];
+
 }
 
 void radixSort(std::vector<int>& arr)
