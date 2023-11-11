@@ -75,7 +75,6 @@ void getTimeResultsMatrix(size_t wordsLen, int countProcessed)
 
 	std::vector<int> vec = generateVector(countProcessed);
 	double Radix = 0.0;
-	double STRASSENTime = 0.0;
 	double Block = 0.0;
 	double Shaker = 0.0;
 	for (int i = 0; i < countProcessed; ++i)
@@ -86,7 +85,6 @@ void getTimeResultsMatrix(size_t wordsLen, int countProcessed)
 		Shaker += getCPUTimeShaker(vec_test);
 	}
 	Radix /= countProcessed;
-	STRASSENTime /= countProcessed;
 	Block /= countProcessed;
 	Shaker /= countProcessed;
 	printf("|%7zu||%15.5g||%18.5g||%29.5g|\n", wordsLen, Radix, Block, Shaker);
