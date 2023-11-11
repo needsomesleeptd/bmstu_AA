@@ -34,6 +34,7 @@ int main()
 
 
 			}
+			std:: cout << "Введите массив для сортировки:\n";
 			std::vector<int> vec(n);
 			for (int i = 0; i < n; i++)
 			{

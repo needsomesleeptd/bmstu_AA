@@ -70,10 +70,13 @@ double getCPUTimeShaker(std::vector<int>& vec)
 	return (endTime - startTime) / TIMEDIVISION;
 }
 
-void getTimeResultsMatrix(size_t wordsLen, int countProcessed)
+void getTimeResultsMatrix(size_t wordsLen, int countProcessed, std::vector<int>& result)
 {
 
-	std::vector<int> vec = generateVector(countProcessed);
+	std::vector<int> vec(wordsLen);
+	for (size_t i = 0; i < wordsLen; i++)
+		vec[i] = result[i];
+
 	double Radix = 0.0;
 	double Block = 0.0;
 	double Shaker = 0.0;
@@ -94,9 +97,10 @@ void getTimeResultsMatrix(size_t wordsLen, int countProcessed)
 void getTimeResults(size_t wordLenStart, size_t wordLenStop, size_t wordLenStep, int countProcessed)
 {
 	printf("\n\n|   n   ||   Поразраядная(mcs)    ||   Блочная(mcs)    ||  Перемешиванием(mcs)   |\n");
+	std::vector<int> res = generateVector(wordLenStop);
 	for (size_t i = wordLenStart; i < wordLenStop; i += wordLenStep)
 	{
-		getTimeResultsMatrix(i, countProcessed);
+		getTimeResultsMatrix(i, countProcessed, res);
 	}
 }
 
