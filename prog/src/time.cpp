@@ -6,7 +6,7 @@
 #include <random>
 #include <iostream>
 
-#include "time.h"
+#include "measure.h"
 
 const double TIMEDIVISION = 1e6; //Millisecounds
 const int MAXVAL = 1e4;
@@ -42,7 +42,7 @@ double getCPUTimeMerge(std::vector<int>& vec)
 	long endTime;
 	//double overallTime;
 	startTime = getCpuTime();
-	mergeSort(vec, 0, vec.size());
+	mergeSort(vec, 0, vec.size() - 1);
 	endTime = getCpuTime();
 	return (endTime - startTime) / TIMEDIVISION;
 }
@@ -54,12 +54,16 @@ double getCPUTimeMergeMultiThread(std::vector<int>& vec, int threadCount)
 	long endTime;
 	//double overallTime;
 	startTime = getCpuTime();
-	mergeSortMultiThread(vec, 0, vec.size(), threadCount);
+	mergeSortMultiThread(vec, 0, vec.size() - 1, threadCount);
 	endTime = getCpuTime();
 	return (endTime - startTime) / TIMEDIVISION;
 }
 
-void getTimeResultsMatrix(size_t wordsLen, int countProcessed, std::vector<int>& result, int threadCount)
+double getTimeResultsMatrix(size_t wordsLen,
+	int countProcessed,
+	std::vector<int>& result,
+	int threadCount,
+	double mergeTimePrev)
 {
 
 	std::vector<int> vec(wordsLen);
@@ -72,15 +76,20 @@ void getTimeResultsMatrix(size_t wordsLen, int countProcessed, std::vector<int>&
 	for (int i = 0; i < countProcessed; ++i)
 	{
 		std::vector<int> vec_test = vec;
-		mergeSortTime += getCPUTimeMerge(vec_test);
+		if (mergeTimePrev < 0.0)
+			mergeSortTime += getCPUTimeMerge(vec_test);
 		mergeSortTimeMultiThread += getCPUTimeMergeMultiThread(vec_test, threadCount);
 
 	}
-	mergeSortTime /= countProcessed;
+	if (mergeTimePrev < 0.0)
+		mergeSortTime /= countProcessed;
+	else
+		mergeSortTime = mergeTimePrev;
 	mergeSortTimeMultiThread /= countProcessed;
 
 	printf("|%7zu||%15.5g||%18.5g|%3d|\n", wordsLen, mergeSortTime, mergeSortTimeMultiThread, threadCount);
 	std::cout << std::flush;
+	return mergeSortTime;
 }
 
 void getTimeResults(size_t wordLenStart,
@@ -92,9 +101,12 @@ void getTimeResults(size_t wordLenStart,
 {
 	printf("\n\n|   n   ||   Сортировка слиянием(мс)    ||   Сортировка Слияние многопоток(мс)    ||  число потоков|\n");
 	std::vector<int> res = generateVector(wordLenStop);
+	double prevTime;
 	for (size_t i = wordLenStart; i < wordLenStop; i += wordLenStep)
 	{
+		prevTime = -1.0;
 		for (int thr = threadCountStart; thr < threadCountEnd; ++thr)
-			getTimeResultsMatrix(i, countProcessed, res, thr);
+			prevTime = getTimeResultsMatrix(i, countProcessed, res, thr, prevTime);
+
 	}
 }

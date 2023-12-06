@@ -9,7 +9,6 @@
 #include <functional>
 #include "sorts.h"
 
-
 void printVector(const std::vector<int>& a)
 {
 	for (int i : a)
@@ -56,7 +55,7 @@ void merge(std::vector<int>& nums, int s, int mid, int e)
 	}
 }
 
-void mergeSort(std::vector<int> & arr, int left, int right)
+void mergeSort(std::vector<int>& arr, int left, int right)
 {
 	if (left >= right)
 	{
@@ -66,16 +65,26 @@ void mergeSort(std::vector<int> & arr, int left, int right)
 	mergeSort(arr, left, mid);
 	mergeSort(arr, mid + 1, right);
 
-
 	merge(arr, left, mid, right);
 }
 
+void mergeKArrays(std::vector<int>& nums, int i, int j, int availThreads)
+{
+	int elem_delta = nums.size() / availThreads;
+	int l = i * elem_delta;
+	int r = j * elem_delta;
+	int mid = (l + r) / 2;
+	if (j - i == 1)
+	{
+		merge(nums, l, mid, r);
+		return;
+	}
 
+	mergeKArrays(nums, i / 2, (i + j) / 2, availThreads / 2);
+	mergeKArrays(nums, (i + j) / 2 + 1, j, availThreads / 2);
+	merge(nums, l, mid, r);
 
-
-
-
-
+}
 
 void mergeSortMultiThread(std::vector<int>& nums, int s, int e, int availThreads)
 {
@@ -84,22 +93,27 @@ void mergeSortMultiThread(std::vector<int>& nums, int s, int e, int availThreads
 		return;
 	}
 
-	int mid = (s + e) / 2;
-	if (availThreads >= 2)
-	{
-		std::thread t1(std::bind(mergeSortMultiThread, std::ref(nums), s, mid, availThreads / 2));
-		std::thread t2(std::bind(mergeSortMultiThread, std::ref(nums), mid + 1, e, availThreads / 2));
-		t1.join();
-		t2.join();
-	}
-	else
-	{
-		mergeSortMultiThread(nums, s, mid, 1);
-		mergeSortMultiThread(nums, mid + 1, e, 1);
-	}
-	merge(nums, s, mid, e);
-}
+	std::vector<int> indexes(availThreads);
+	std::vector<std::thread> threads(availThreads);
+	int elem_delta = (e - s) / availThreads;
 
+	for (int i = 0; i < availThreads; i++)
+	{
+		int l = i * elem_delta;
+		int r = (i + 1) * elem_delta;
+		if (i == availThreads - 1)
+			r = nums.size() - 1;
+		threads[i] = std::thread(std::bind(mergeSort, std::ref(nums), l, r));
+
+	}
+
+	for (auto& t : threads)
+	{
+		t.join();
+	}
+	mergeKArrays(nums, 0, availThreads - 1, availThreads);
+
+}
 
 
 

@@ -3,7 +3,7 @@ project(lab_01_AA)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(HEADERS time.hpp sorts.h)
+set(HEADERS measure.h sorts.h)
 set(SOURCES time.cpp sorts.cpp)
 
 
