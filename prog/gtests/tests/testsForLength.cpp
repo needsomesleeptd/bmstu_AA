@@ -1,132 +1,154 @@
-//
 // Created by Андрей on 10/09/2023.
 //
 #include <gtest/gtest.h>
-#include "../../src/table.hpp"
+#include "../../src/sorts.h"
 
 //Тестирование при словах одинаковой длины
-TEST(LenTest, EQLENTEST) {
-	std::wstring st1 = L"wwwwwwc";
-	std::wstring st2 = L"bbbbbbc";
-	Matrix mat(st1.size(),st2.size());
+TEST(sort, already_sorted)
+{
+	std::vector<int> vals = { 1, 2, 3, 4 };
 
-	int DamerauLen = 6;
-	int LevLen  = 6;
+	std::vector<int> merge_sort = vals;
+	std::vector<int> merge_sort_multithread = vals;
 
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+	mergeSort(merge_sort,0,merge_sort.size());
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
 
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
-
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
+	ASSERT_EQ(true, merge_sort == vals);
+	ASSERT_EQ(true, merge_sort_multithread == vals);
 }
 
-//Тестирование с различными результатами при использовании различных расстояний
-TEST(LenTest, DIFLENTEST) {
-	std::wstring st1 = L"AB";
-	std::wstring st2 = L"BA";
-	Matrix mat(st1.size(),st2.size());
+TEST(sort, reverse_sorted)
+{
+	std::vector<int> vals = { 4, 3, 2, 1 };
 
-	int DamerauLen = 1;
-	int LevLen  = 2;
+	std::vector<int> ref = { 1, 2, 3, 4 };
+	std::vector<int> merge_sort = vals;
+	
+	std::vector<int> merge_sort_multithread = vals;
 
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+	mergeSort(merge_sort,0,merge_sort.size());;
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	
 
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+	ASSERT_EQ(true, merge_sort == ref);
+	
+	ASSERT_EQ(true, merge_sort_multithread == ref);
 
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
 }
 
+TEST(sort, not_sorted)
+{
+	std::vector<int> vals = { 3, 5, 1, 6 };
 
-//Различающийся результат расстояний при словах различной длины
-TEST(LenTest, LongWords) {
-	std::wstring st1 = L"KAABKA";
-	std::wstring st2 = L"AKAAK";
-	Matrix mat(st1.size(),st2.size());
+	std::vector<int> ref = { 1, 3, 5, 6 };
+	std::vector<int> merge_sort = vals;
+	
+	std::vector<int> merge_sort_multithread = vals;
 
-	int DamerauLen = 3;
-	int LevLen  = 3;
+	mergeSort(merge_sort,0,merge_sort.size());;
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	
 
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+	ASSERT_EQ(true, merge_sort == ref);
+	
+	ASSERT_EQ(true, merge_sort_multithread == ref);
 
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
-
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
 }
 
-//Тестирование подобное тесту на русском языке
-TEST(LenTest, English) {
-	std::wstring st1 = L"BCA";
-	std::wstring st2 = L"ABC";
-	Matrix mat(st1.size(),st2.size());
+TEST(sort, one_value)
+{
+	std::vector<int> vals = { 1 };
 
-	int DamerauLen = 2;
-	int LevLen  = 2;
+	std::vector<int> ref = { 1 };
+	std::vector<int> merge_sort = vals;
+	
+	std::vector<int> merge_sort_multithread = vals;
 
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+	mergeSort(merge_sort,0,merge_sort.size());;
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	
 
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+	ASSERT_EQ(true, merge_sort == ref);
+	
+	ASSERT_EQ(true, merge_sort_multithread == ref);
 
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
 }
 
-//Использование русских букв
-TEST(LenTest, Russian) {
-	std::wstring st1 = L"ВФА";
-	std::wstring st2 = L"АВФ";
-	Matrix mat(st1.size(),st2.size());
+TEST(sort, negatives)
+{
+	std::vector<int> vals = { -5, -1, -3, -4, -2 };
 
-	int DamerauLen = 2;
-	int LevLen  = 2;
+	std::vector<int> ref = { -5, -4, -3, -2, -1 };
+	std::vector<int> merge_sort = vals;
+	
+	std::vector<int> merge_sort_multithread = vals;
 
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+	mergeSort(merge_sort,0,merge_sort.size());;
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	
 
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+	ASSERT_EQ(true, merge_sort == ref);
+	
+	ASSERT_EQ(true, merge_sort_multithread == ref);
 
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
 }
 
-//Большая разница в длине слов
-TEST(LenTest, BIGSIZEDIFF) {
-	std::wstring st1 = L"ADF";
-	std::wstring st2 = L"ABFDSADADF";
-	Matrix mat(st1.size(),st2.size());
+TEST(sort, positives_negatives)
+{
+	std::vector<int> vals = { 1, -3, 2, 9, -9, 4, 5, 0, 1 };
 
-	int DamerauLen = 7;
-	int LevLen  = 7;
+	std::vector<int> ref = { -9, -3, 0, 1, 1, 2, 4, 5, 9 };
+	std::vector<int> merge_sort = vals;
+	
+	std::vector<int> merge_sort_multithread = vals;
 
-	int lenMatDamerau =  mat.findMatrixDistDamerau(st1, st2);
-	int lenRecurseMemDamerau = mat.findRecurseDistMemDamerau(st1, st2);
-	int lenRecurseDamerau =  mat.findRecurseDistDamerau(st1, st2);
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	
+	mergeSort(merge_sort,0,merge_sort.size());;
 
-	int lenMatLev = mat.findMatrixDistLev(st1,st2);
+	ASSERT_EQ(true, merge_sort == ref);
+	
+	ASSERT_EQ(true, merge_sort_multithread == ref);
 
-	ASSERT_EQ(DamerauLen,lenMatDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseDamerau);
-	ASSERT_EQ(DamerauLen,lenRecurseMemDamerau);
-	ASSERT_EQ(LevLen,lenMatLev);
+}
+
+TEST(sort, duplicates)
+{
+	std::vector<int> vals = { 1, -3, 2, 9, -9, 4, 5, 0, 1 };
+
+	std::vector<int> ref = { -9, -3, 0, 1, 1, 2, 4, 5, 9 };
+	std::vector<int> merge_sort = vals;
+	
+	std::vector<int> merge_sort_multithread = vals;
+
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	
+	mergeSort(merge_sort,0,merge_sort.size());;
+
+	ASSERT_EQ(true, merge_sort == ref);
+	
+	ASSERT_EQ(true, merge_sort_multithread == ref);
+
+}
+
+TEST(sort, big_numbers)
+{
+	std::vector<int> vals = { -1231, 444411, -12, 13, 24, 437, 8, 9, 3211, -10,0 };
+
+	std::vector<int> ref = { -1231, -12, -10,0, 8, 9, 13, 24, 437, 3211, 444411 };
+	std::vector<int> merge_sort = vals;
+	
+	std::vector<int> merge_sort_multithread = vals;
+
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+
+
+	mergeSort(merge_sort,0,merge_sort.size());;
+
+
+	ASSERT_EQ(true, merge_sort == ref);
+	
+	ASSERT_EQ(true, merge_sort_multithread == ref);
+
 }

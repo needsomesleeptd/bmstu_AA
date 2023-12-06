@@ -34,3 +34,5 @@
 #other stuff
 cmake-build-debug/
 .idea
+prog/gtests/lib/
+*.zip

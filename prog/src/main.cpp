@@ -1,11 +1,20 @@
 #include <iostream>
 #include <string>
-#include "table.hpp"
 #include <locale>
-#include "timings.h"
+#include <vector>
+
+#include "time.hpp"
+#include "sorts.h"
+
+
+
 int main()
 {
-	std::vector<int> a = {4,2,3,7,8};
-	recursiveMergeSort()
-	return 0;
+	getTimeResults(10000,
+		100000,
+		1000,
+		500,
+		1,
+		10);
+
 }

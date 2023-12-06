@@ -3,10 +3,10 @@ project(lab_01_AA)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(HEADERS  table.hpp timings.h)
-set(SOURCES   table.cpp timings.cpp)
+set(HEADERS time.hpp sorts.h)
+set(SOURCES time.cpp sorts.cpp)
 
 
 ADD_LIBRARY(src ${HEADERS} ${SOURCES})
 add_compile_options(-O0)
-add_executable(lab_01_src ${HEADERS} ${SOURCES} main.cpp)
+add_executable(lab_01_src ${HEADERS} ${SOURCES} main.cpp semaphore.h)
