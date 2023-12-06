@@ -17,7 +17,7 @@ void printVector(const std::vector<int>& a)
 
 void merge(std::vector<int>& nums, int s, int mid, int e)
 {
-	std::vector<int> lnums, rnums; // lnums, rnums are two subsequences, nums is used to store the combined sequence
+	std::vector<int> lnums, rnums;
 	for (int i = s; i <= e; i++)
 	{
 		if (i <= mid)
@@ -31,8 +31,7 @@ void merge(std::vector<int>& nums, int s, int mid, int e)
 	}
 
 	int l = 0, r = 0, k = s;
-	// Compare the elements pointed to by the two pointers (l and r), select relatively small elements (in ascending order) and put them into the merge space,
-	// and move the pointer to the next position until one of the pointers exceeds the end of the sequence
+
 	while (l < lnums.size() && r < rnums.size())
 	{
 		if (lnums[l] < rnums[r])
@@ -44,7 +43,7 @@ void merge(std::vector<int>& nums, int s, int mid, int e)
 			nums[k++] = rnums[r++];
 		}
 	}
-	// Copy all the remaining elements of another sequence directly to the end of the merged sequence
+
 	while (l < lnums.size())
 	{
 		nums[k++] = lnums[l++];
@@ -68,29 +67,6 @@ void mergeSort(std::vector<int>& arr, int left, int right)
 	merge(arr, left, mid, right);
 }
 
-void mergeKArrays(std::vector<int>& nums,
-	std::vector<std::tuple<int, int>> sortedIndices,
-	int i,
-	int j,
-	int availThreads)
-{
-	int l = i * std::get<0>(sortedIndices[i]);
-	int r = j * std::get<1>(sortedIndices[j]);
-	int mid = std::get<1>(sortedIndices[i]);
-	if (i == j)
-		return;
-	if (j - i == 1)
-	{
-		merge(nums, l, mid, r);
-		return;
-	}
-
-	mergeKArrays(nums, sortedIndices, i / 2, (i + j) / 2, availThreads / 2);
-	mergeKArrays(nums, sortedIndices, (i + j) / 2 + 1, j, availThreads / 2);
-	merge(nums, l, mid, r);
-
-}
-
 void mergeSortMultiThread(std::vector<int>& nums, int s, int e, int availThreads)
 {
 	if (s >= e)
@@ -98,30 +74,26 @@ void mergeSortMultiThread(std::vector<int>& nums, int s, int e, int availThreads
 		return;
 	}
 
-	std::vector<int> indexes(availThreads);
-	std::vector<std::thread> threads(availThreads);
-	int elem_delta = (e - s + 1) / availThreads;
-	int l = 0;
-	int r = elem_delta;
-	std::vector<std::tuple<int, int>> sortedIndices;
-	for (int i = 0; i < availThreads; i++)
+	int mid = (s + e) / 2;
+	if (availThreads == 1)
 	{
-
-		threads[i] = std::thread(std::bind(mergeSort, std::ref(nums), l, r));
-		sortedIndices.emplace_back(l, r);
-		l += elem_delta + 1;
-		r += elem_delta + 1;
-		if (i == availThreads - 2)
-			r = nums.size() - 1;
-
-	}
-
-	for (auto& t : threads)
-	{
+		std::thread t(std::bind(mergeSortMultiThread, std::ref(nums), s, mid, availThreads / 2));
+		mergeSortMultiThread(nums, mid + 1, e, 0);
 		t.join();
 	}
-
-	mergeKArrays(nums, sortedIndices, 0, availThreads - 1, availThreads);
+	else if (availThreads >= 2)
+	{
+		std::thread t1(std::bind(mergeSortMultiThread, std::ref(nums), s, mid, availThreads / 2));
+		std::thread t2(std::bind(mergeSortMultiThread, std::ref(nums), mid + 1, e, availThreads / 2));
+		t1.join();
+		t2.join();
+	}
+	else
+	{
+		mergeSortMultiThread(nums, s, mid, 0);
+		mergeSortMultiThread(nums, mid + 1, e, 0);
+	}
+	merge(nums, s, mid, e);
 }
 
 
