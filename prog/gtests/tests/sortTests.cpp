@@ -11,8 +11,8 @@ TEST(sort, already_sorted)
 	std::vector<int> merge_sort = vals;
 	std::vector<int> merge_sort_multithread = vals;
 
-	mergeSort(merge_sort,0,merge_sort.size());
-	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	mergeSort(merge_sort,0,merge_sort.size() - 1);
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size() - 1, 2);
 
 	ASSERT_EQ(true, merge_sort == vals);
 	ASSERT_EQ(true, merge_sort_multithread == vals);
@@ -27,8 +27,8 @@ TEST(sort, reverse_sorted)
 	
 	std::vector<int> merge_sort_multithread = vals;
 
-	mergeSort(merge_sort,0,merge_sort.size());;
-	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	mergeSort(merge_sort,0,merge_sort.size() - 1);;
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size() - 1, 2);
 	
 
 	ASSERT_EQ(true, merge_sort == ref);
@@ -46,8 +46,8 @@ TEST(sort, not_sorted)
 	
 	std::vector<int> merge_sort_multithread = vals;
 
-	mergeSort(merge_sort,0,merge_sort.size());;
-	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	mergeSort(merge_sort,0,merge_sort.size() - 1);;
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size() - 1, 2);
 	
 
 	ASSERT_EQ(true, merge_sort == ref);
@@ -65,8 +65,8 @@ TEST(sort, one_value)
 	
 	std::vector<int> merge_sort_multithread = vals;
 
-	mergeSort(merge_sort,0,merge_sort.size());;
-	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	mergeSort(merge_sort,0,merge_sort.size() - 1);;
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size() - 1, 2);
 	
 
 	ASSERT_EQ(true, merge_sort == ref);
@@ -84,8 +84,8 @@ TEST(sort, negatives)
 	
 	std::vector<int> merge_sort_multithread = vals;
 
-	mergeSort(merge_sort,0,merge_sort.size());;
-	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	mergeSort(merge_sort,0,merge_sort.size() - 1);;
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size() - 1, 2);
 	
 
 	ASSERT_EQ(true, merge_sort == ref);
@@ -103,9 +103,9 @@ TEST(sort, positives_negatives)
 	
 	std::vector<int> merge_sort_multithread = vals;
 
-	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size() - 1, 2);
 	
-	mergeSort(merge_sort,0,merge_sort.size());;
+	mergeSort(merge_sort,0,merge_sort.size() - 1);;
 
 	ASSERT_EQ(true, merge_sort == ref);
 	
@@ -122,9 +122,9 @@ TEST(sort, duplicates)
 	
 	std::vector<int> merge_sort_multithread = vals;
 
-	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size() - 1, 2);
 	
-	mergeSort(merge_sort,0,merge_sort.size());;
+	mergeSort(merge_sort,0,merge_sort.size() - 1);;
 
 	ASSERT_EQ(true, merge_sort == ref);
 	
@@ -141,10 +141,10 @@ TEST(sort, big_numbers)
 	
 	std::vector<int> merge_sort_multithread = vals;
 
-	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size(),2);
+	mergeSortMultiThread(merge_sort_multithread,0,merge_sort_multithread.size() - 1, 2);
 
 
-	mergeSort(merge_sort,0,merge_sort.size());;
+	mergeSort(merge_sort,0,merge_sort.size() - 1);;
 
 
 	ASSERT_EQ(true, merge_sort == ref);
