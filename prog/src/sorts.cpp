@@ -77,6 +77,8 @@ void mergeKArrays(std::vector<int>& nums,
 	int l = i * std::get<0>(sortedIndices[i]);
 	int r = j * std::get<1>(sortedIndices[j]);
 	int mid = std::get<1>(sortedIndices[i]);
+	if (i == j)
+		return;
 	if (j - i == 1)
 	{
 		merge(nums, l, mid, r);
@@ -108,7 +110,7 @@ void mergeSortMultiThread(std::vector<int>& nums, int s, int e, int availThreads
 		threads[i] = std::thread(std::bind(mergeSort, std::ref(nums), l, r));
 		sortedIndices.emplace_back(l, r);
 		l += elem_delta + 1;
-		r += elem_delta;
+		r += elem_delta + 1;
 		if (i == availThreads - 2)
 			r = nums.size() - 1;
 
