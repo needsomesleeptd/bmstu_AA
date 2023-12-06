@@ -68,20 +68,23 @@ void mergeSort(std::vector<int>& arr, int left, int right)
 	merge(arr, left, mid, right);
 }
 
-void mergeKArrays(std::vector<int>& nums, int i, int j, int availThreads)
+void mergeKArrays(std::vector<int>& nums,
+	std::vector<std::tuple<int, int>> sortedIndices,
+	int i,
+	int j,
+	int availThreads)
 {
-	int elem_delta = nums.size() / availThreads;
-	int l = i * elem_delta;
-	int r = j * elem_delta;
-	int mid = (l + r) / 2;
+	int l = i * std::get<0>(sortedIndices[i]);
+	int r = j * std::get<1>(sortedIndices[j]);
+	int mid = std::get<1>(sortedIndices[i]);
 	if (j - i == 1)
 	{
 		merge(nums, l, mid, r);
 		return;
 	}
 
-	mergeKArrays(nums, i / 2, (i + j) / 2, availThreads / 2);
-	mergeKArrays(nums, (i + j) / 2 + 1, j, availThreads / 2);
+	mergeKArrays(nums, sortedIndices, i / 2, (i + j) / 2, availThreads / 2);
+	mergeKArrays(nums, sortedIndices, (i + j) / 2 + 1, j, availThreads / 2);
 	merge(nums, l, mid, r);
 
 }
@@ -95,15 +98,19 @@ void mergeSortMultiThread(std::vector<int>& nums, int s, int e, int availThreads
 
 	std::vector<int> indexes(availThreads);
 	std::vector<std::thread> threads(availThreads);
-	int elem_delta = (e - s) / availThreads;
-
+	int elem_delta = (e - s + 1) / availThreads;
+	int l = 0;
+	int r = elem_delta;
+	std::vector<std::tuple<int, int>> sortedIndices;
 	for (int i = 0; i < availThreads; i++)
 	{
-		int l = i * elem_delta;
-		int r = (i + 1) * elem_delta;
-		if (i == availThreads - 1)
-			r = nums.size() - 1;
+
 		threads[i] = std::thread(std::bind(mergeSort, std::ref(nums), l, r));
+		sortedIndices.emplace_back(l, r);
+		l += elem_delta + 1;
+		r += elem_delta;
+		if (i == availThreads - 2)
+			r = nums.size() - 1;
 
 	}
 
@@ -111,8 +118,8 @@ void mergeSortMultiThread(std::vector<int>& nums, int s, int e, int availThreads
 	{
 		t.join();
 	}
-	mergeKArrays(nums, 0, availThreads - 1, availThreads);
 
+	mergeKArrays(nums, sortedIndices, 0, availThreads - 1, availThreads);
 }
 
 
