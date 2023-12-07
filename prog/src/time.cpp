@@ -78,6 +78,7 @@ double getTimeResultsMatrix(size_t wordsLen,
 		std::vector<int> vec_test = vec;
 		if (mergeTimePrev < 0.0)
 			mergeSortTime += getCPUTimeMerge(vec_test);
+		vec_test = vec;
 		mergeSortTimeMultiThread += getCPUTimeMergeMultiThread(vec_test, threadCount);
 
 	}
