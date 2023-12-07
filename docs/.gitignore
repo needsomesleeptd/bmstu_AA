@@ -25,3 +25,6 @@ parts/*.toc
 *.out
 *.aux
 *Zone.Identifier
+
+*.fls
+*latexmk
