@@ -9,11 +9,11 @@
 #include <functional>
 #include "sorts.h"
 
-void printVector(const std::vector<int>& a)
+/*void printVector(const std::vector<int>& a)
 {
 	for (int i : a)
 		std::cout << i << ' ';
-}
+}*/
 
 void merge(std::vector<int>& nums, int s, int mid, int e)
 {
