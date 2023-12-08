@@ -28,3 +28,4 @@ parts/*.toc
 
 *.fls
 *latexmk
+*.zip
