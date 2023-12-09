@@ -27,36 +27,37 @@ std::vector<int> generateVector(const size_t len)
 
 long getCpuTime()
 {
-	struct timespec t;
-	if (clock_gettime(CLOCK_THREAD_CPUTIME_ID, &t))
+	/*struct timespec t;
+	clock_t time;
+	if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t))
 	{
 		std::cerr << "Impossible to get time\n";
 		return -1;
-	}
-	return t.tv_sec * 1000000000LL + t.tv_nsec;
+	}*/
+	return clock();
 }
 
 double getCPUTimeMerge(std::vector<int>& vec)
 {
-	long startTime;
-	long endTime;
+	clock_t startTime;
+	clock_t endTime;
 	//double overallTime;
 	startTime = getCpuTime();
 	mergeSort(vec, 0, vec.size() - 1);
 	endTime = getCpuTime();
-	return (endTime - startTime) / TIMEDIVISION;
+	return  (double)(endTime - startTime) / (CLOCKS_PER_SEC) * 1e3;
 }
 
 double getCPUTimeMergeMultiThread(std::vector<int>& vec, int threadCount)
 {
 
-	long startTime;
-	long endTime;
+	clock_t startTime;
+	clock_t endTime;
 	//double overallTime;
 	startTime = getCpuTime();
 	mergeSortMultiThread(vec, 0, vec.size() - 1, threadCount);
 	endTime = getCpuTime();
-	return (endTime - startTime) / TIMEDIVISION;
+	return  (double)(endTime - startTime) / (CLOCKS_PER_SEC) * 1e3;
 }
 
 double getTimeResultsMatrix(size_t wordsLen,
