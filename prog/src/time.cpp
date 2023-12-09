@@ -5,6 +5,7 @@
 
 #include <random>
 #include <iostream>
+#include <ctime>
 
 #include "measure.h"
 
@@ -34,7 +35,7 @@ long getCpuTime()
 		std::cerr << "Impossible to get time\n";
 		return -1;
 	}*/
-	return clock();
+	return std::clock();
 }
 
 double getCPUTimeMerge(std::vector<int>& vec)
