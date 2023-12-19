@@ -1,10 +1,11 @@
 //
 // Created by Андрей on 10/09/2023.
 //
-#include "sort.hpp"
+#include "find.hpp"
 
 #include <random>
 #include <iostream>
+#include <algorithm>
 
 #include "timings.h"
 
@@ -21,7 +22,7 @@ std::vector<int> generateVector(const size_t len)
 	std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1e7);
 	for (size_t i = 0; i < len; i++)
 		vec[i] = dist(rng);
-
+	std::sort(vec.begin(), vec.end());
 	return vec;
 }
 
@@ -42,7 +43,7 @@ double getCPUTimeRadix(std::vector<int>& vec)
 	long endTime;
 	//double overallTime;
 	startTime = getCpuTime();
-	radixSort(vec);
+//	radixSort(vec);
 	endTime = getCpuTime();
 	return (endTime - startTime) / TIMEDIVISION;
 }
@@ -54,7 +55,7 @@ double getCPUTimeBlock(std::vector<int>& vec)
 	long endTime;
 	//double overallTime;
 	startTime = getCpuTime();
-	blockSort(vec, k);
+	//blockSort(vec, k);
 	endTime = getCpuTime();
 	return (endTime - startTime) / TIMEDIVISION;
 }
@@ -65,42 +66,33 @@ double getCPUTimeShaker(std::vector<int>& vec)
 	long endTime;
 	//double overallTime;
 	startTime = getCpuTime();
-	shakerSort(vec);
+	//shakerSort(vec);
 	endTime = getCpuTime();
 	return (endTime - startTime) / TIMEDIVISION;
 }
 
-void getTimeResultsMatrix(size_t wordsLen, int countProcessed, std::vector<int>& result)
+void getTimeResultsMatrix(size_t wordsLen,
+	int countProcessed,
+	std::vector<std::vector<std::pair<int, int>>>& resultBF,
+	std::vector<std::vector<std::pair<int, int>>>& resultF)
 {
+	std::vector<std::vector<std::pair<int, int>>> mergedBFind;
+	std::vector<std::vector<std::pair<int, int>>> mergedFind;
 
-	std::vector<int> vec(wordsLen);
-	for (size_t i = 0; i < wordsLen; i++)
-		vec[i] = result[i];
-
-	double Radix = 0.0;
-	double Block = 0.0;
-	double Shaker = 0.0;
-	for (int i = 0; i < countProcessed; ++i)
+	std::vector<int> nums = generateVector(wordsLen);
+	std::vector<std::pair<int, int>> tempBF;
+	std::vector<std::pair<int, int>> tempF;
+	for (int i = 0; i < wordsLen; i++)
 	{
-		std::vector<int> vec_test = vec;
-		Radix += getCPUTimeRadix(vec_test);
-		Block += getCPUTimeBlock(vec_test);
-		Shaker += getCPUTimeShaker(vec_test);
+		search(nums, nums[i], tempF);
+		binSearch(nums, nums[i], tempBF);
+		mergedBFind.push_back(tempBF);
+		mergedFind.push_back(tempF);
+		tempBF.clear();
+		tempF.clear();
 	}
-	Radix /= countProcessed;
-	Block /= countProcessed;
-	Shaker /= countProcessed;
-	printf("|%7zu||%15.5g||%18.5g||%29.5g|\n", wordsLen, Radix, Block, Shaker);
-	std::cout << std::flush;
+	resultF = mergedFind;
+	resultBF = mergedBFind;
 }
 
-void getTimeResults(size_t wordLenStart, size_t wordLenStop, size_t wordLenStep, int countProcessed)
-{
-	printf("\n\n|   n   ||   Поразраядная(mcs)    ||   Блочная(mcs)    ||  Перемешиванием(mcs)   |\n");
-	std::vector<int> res = generateVector(wordLenStop);
-	for (size_t i = wordLenStart; i < wordLenStop; i += wordLenStep)
-	{
-		getTimeResultsMatrix(i, countProcessed, res);
-	}
-}
 
