@@ -1,12 +1,3 @@
-//
-// Created by Андрей on 05/09/2023.
-//
-
-#include <iostream>
-#include "find.hpp"
-#include "cassert"
-#include <algorithm>
-
 int binSearch(std::vector<int>& v, int x, std::vector<std::pair<int,int>>& res)
 {
 	int low = 0;
@@ -31,17 +22,4 @@ int binSearch(std::vector<int>& v, int x, std::vector<std::pair<int,int>>& res)
 
 	return -1;
 
-}
-int search(std::vector<int>& v, int x, std::vector<std::pair<int,int>>& res)
-{
-
-	int cmpCount = 0;
-	for (int i = 0; i < v.size(); i++)
-	{
-		++cmpCount;
-		res.emplace_back(i,cmpCount);
-		if (v[i] == x)
-			return i;
-	}
-	return -1;
 }

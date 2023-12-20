@@ -82,6 +82,14 @@ void getTimeResultsMatrix(size_t wordsLen,
 	std::vector<int> nums = generateVector(wordsLen);
 	std::vector<std::pair<int, int>> tempBF;
 	std::vector<std::pair<int, int>> tempF;
+
+	search(nums, -1, tempF);
+	binSearch(nums, -1, tempBF);
+	mergedBFind.push_back(tempBF);
+	mergedFind.push_back(tempF);
+	tempBF.clear();
+	tempF.clear();
+
 	for (int i = 0; i < wordsLen; i++)
 	{
 		search(nums, nums[i], tempF);
@@ -91,6 +99,9 @@ void getTimeResultsMatrix(size_t wordsLen,
 		tempBF.clear();
 		tempF.clear();
 	}
+
+
+
 	resultF = mergedFind;
 	resultBF = mergedBFind;
 }
