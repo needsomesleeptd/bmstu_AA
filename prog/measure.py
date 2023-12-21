@@ -54,7 +54,7 @@ def testTime():
     # Graph
     fig = plt.figure(figsize=(10, 7))
     plot = fig.add_subplot()
-    plot.plot(sizes, timeFullCombinations, label = "Полный перебор")
+    plot.plot(sizes, timeFullCombinations, label = "Полный перебор",marker='*')
     plot.plot(sizes, timeAntAlg, label="Муравьиный алгоритм")
 
     plt.legend()
@@ -67,11 +67,11 @@ def testTime():
 
 
 def parametrization(type = CSV):
-    alpha_arr = [num / 10 for num in range(1, 10)]
-    k_eva_arr = [num / 10 for num in range(1, 9)]
-    days_arr = [1, 3, 5, 10, 50, 100, 300, 500]
-
-    size = 8
+    alpha_arr = [num / 10 for num in range(1, 10,2)]
+    k_eva_arr = [num / 10 for num in range(1, 10,2)]
+    days_arr = [1, 5, 10,30,100]
+    times = 10
+    size = 10
 
     matrix1 = readFileMatrix("real.csv")
     matrix2 = readFileMatrix("gen.csv")
@@ -93,8 +93,13 @@ def parametrization(type = CSV):
             count += 1
 
             for days in days_arr:
-                res1 = antAlg(matrix1, size, alpha, beta, k_eva, days)
-                res2 = antAlg(matrix2, size, alpha, beta, k_eva, days)
+                results_1 = []
+                results_2 = []
+                for i in range(times):
+                    res1 = antAlg(matrix1, size, alpha, beta, k_eva, days)
+                    res2 = antAlg(matrix2, size, alpha, beta, k_eva, days)
+                    results_1.append(res1)
+                    results_2.append(res2)
 
                 if (type == LATEX):
                     sep = " & "
@@ -105,7 +110,8 @@ def parametrization(type = CSV):
                 else:
                     sep = " | "
                     ender = ""
-
+                res1 = max(results_1, key=lambda x: x[0])
+                res2 = max(results_2, key=lambda x: x[0])
                 str1 = "%4.1f%s%4.1f%s%4d%s%5d%s%5d%s\n" \
                     % (alpha, sep, k_eva, sep, days, sep, optimal1[0], sep, res1[0] - optimal1[0], ender)
 

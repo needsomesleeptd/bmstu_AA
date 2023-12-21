@@ -44,7 +44,7 @@ if __name__ == '__main__':
             parseAll()
         elif option == 8:
             n = int(input('Введите размерность матрицы:'))
-            mat = generateMatrix(n,0,10)
+            mat = generateMatrix(n,0,100)
             np.savetxt(PATH_TO_TABLE, mat, delimiter=",")
 
         elif (option == -1):

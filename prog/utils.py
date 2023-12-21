@@ -165,7 +165,7 @@ def readMatrix():
     matrix = []
     try:
         while True:
-            row = input("Enter a row (space-separated values), or press Enter to finish: ")
+            row = input("Введите элементы матрицы через пробел или нажмите enter для окончания ввода:")
             if not row:
                 break
             row_values = row.split()

@@ -1,7 +1,7 @@
 
 
 PATH_TO_TABLE = 'data/real.csv'
-
+PATH_TO_PAR = 'data/par.csv'
 EXIT = 0
 ALL_COMB = 1
 ANT_ALG = 2
