@@ -1,7 +1,7 @@
 import numpy as np
 from os import system
 from random import randint
-from algorithms import fullCombinationAlg, antAlgorithm
+from algorithms import CombAlg, antAlg
 
 def generateMatrix(size, randStart, randEnd):
     matrix = np.zeros((size, size), dtype = int)
@@ -14,6 +14,9 @@ def generateMatrix(size, randStart, randEnd):
                 num = randint(randStart, randEnd)
             matrix[i][j] = num
             matrix[j][i] = num
+    for i in range(1,size // 2):
+        for j in range(1,size // 2):
+            matrix[size - i][size - j] = matrix[i][j]
 
     return matrix
 
@@ -86,16 +89,16 @@ def printMatrix():
             print("%4d" % (matrix[i][j]), end = "")
         print()
 
-def readMatrix():
+def readMatrixFile():
     #files = listDataFiles()
     #fileIndex = int(input("\nВыберите файл: ")) - 1
-    matrix = readFileMatrix("cities.csv")
+    matrix = readFileMatrix("real.csv")
     return matrix
 
 def parseFullCombinations():
-    matrix = readMatrix()
+    matrix = readMatrixFile()
     size = len(matrix)
-    result = fullCombinationAlg(matrix, size)
+    result = CombAlg(matrix, size)
     print("\n\nМинимальная сумма пути = ", result[0],
             "\nПуть: ", result[1])
 
@@ -115,26 +118,63 @@ def readKoeffs():
     return alpha, beta, k_evaporation, days
 
 def parseAntAlg():
-    matrix = readMatrix()
+    matrix = readMatrixFile()
     size = len(matrix)
     alpha, beta, k_evaporation, days = readKoeffs()
-    result = antAlgorithm(matrix, size, alpha, beta, k_evaporation, days)
+    result = antAlg(matrix, size, alpha, beta, k_evaporation, days)
     print("\n\nМинимальная сумма пути = ", result[0],
             "\nПуть: ", result[1])
 
+
+
+
 def parseAll():
-    matrix = readMatrix()
+    matrix = readMatrixFile()
     size = len(matrix)
     alpha, beta, k_evaporation, days = readKoeffs()
 
-    result = fullCombinationAlg(matrix, size)
+    result = CombAlg(matrix, size)
 
     print("\n\nАлгоритм полного перебора \
             \n\tМинимальная длина пути = ", result[0],
             "\n\tПуть: ", result[1])
 
-    result = antAlgorithm(matrix, size, alpha, beta, k_evaporation, days)
+    result = antAlg(matrix, size, alpha, beta, k_evaporation, days)
 
     print("\n\nМуравьиный алгоритм \
             \n\tМинимальная длина пути = ", result[0],
             "\n\tПуть: ", result[1])
+
+
+
+def isFloat(value):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
+
+def checkFloatMatrix(matrix):
+    for row in matrix:
+        for val in row:
+            if not isFloat(val):
+                return False
+    return True
+
+def readMatrix():
+    matrix = []
+    try:
+        while True:
+            row = input("Enter a row (space-separated values), or press Enter to finish: ")
+            if not row:
+                break
+            row_values = row.split()
+            if not checkFloatMatrix([row_values]):
+                print("Error: Input values must be of type float")
+                return []
+            matrix.append([float(val) for val in row_values])
+    except EOFError:
+        pass
+    if len(matrix) != len(matrix[0]):
+        return []
+    return matrix

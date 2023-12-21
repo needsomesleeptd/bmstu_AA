@@ -3,7 +3,7 @@ import numpy as np
 from random import random
 from constants import MIN_PHEROMONE
 
-def fullCombinationAlg(matrix, size):
+def CombAlg(matrix, size):
 
     places = np.arange(size)
     placesCombinations = list()
@@ -64,15 +64,15 @@ def calcLength(matrix, route):
     return length
 
 
-def updatePheromones(matrix, places, visited, pheromones, q, k_evaporation):
-    ants = places
+def updPher(matrix, cities, visited, pheromones, q, k_evaporation):
+    ants = cities
 
-    for i in range(places):
-        for j in range(places):
+    for i in range(cities):
+        for j in range(cities):
             delta = 0
             for ant in range(ants):
-                length = calcLength(matrix, visited[ant])
-                delta += q / length
+                cur_dist = calcLength(matrix, visited[ant])
+                delta += q / cur_dist
 
             pheromones[i][j] *= (1 - k_evaporation)
             pheromones[i][j] += delta
@@ -82,7 +82,7 @@ def updatePheromones(matrix, places, visited, pheromones, q, k_evaporation):
     return pheromones
 
 
-def findWays(pheromones, visibility, visited, places, ant, alpha, beta):
+def findProbs(pheromones, visibility, visited, places, ant, alpha, beta):
     pk = [0] * places
 
     for place in range(places):
@@ -101,10 +101,8 @@ def findWays(pheromones, visibility, visited, places, ant, alpha, beta):
     return pk
 
 
-# Следующий город
-#  0         pk[0]  pk[1]    pk[2]       pk[2]  1
-#  |----------|------|--------|---x--------|----|
-def chooseNextPlaceByPosibility(pk):
+
+def chooseNextСity(pk):
     posibility = random()
     choice = 0
     chosenPlace = 0
@@ -116,23 +114,22 @@ def chooseNextPlaceByPosibility(pk):
 
 
 
-def antAlgorithm(matrix, places, alpha, beta, k_evaporation, days):
-    q = calcQ(matrix, places)
+def antAlg(matrix, cities, alpha, beta, k_evaporation, days):
+    q = calcQ(matrix, cities)
     bestWay = []
     minDist = float("inf")
-    pheromones = calcPheromones(places)
-    visibility = calcVisibility(matrix, places)
-    ants = places
+    pheromones = calcPheromones(cities)
+    visibility = calcVisibility(matrix, cities)
+    ants = cities
     for day in range(days):
-        route = np.arange(places)
+        route = np.arange(cities)
         visited = calcVisitedPlaces(route, ants)
+
         for ant in range(ants):
             while (len(visited[ant]) != ants):
-                pk = findWays(pheromones, visibility, visited, places, ant, alpha, beta)
-                chosenPlace = chooseNextPlaceByPosibility(pk)
+                pk = findProbs(pheromones, visibility, visited, cities, ant, alpha, beta)
+                chosenPlace = chooseNextСity(pk)
                 visited[ant].append(chosenPlace - 1)
-
-
 
             curLength = calcLength(matrix, visited[ant])
 
@@ -140,6 +137,6 @@ def antAlgorithm(matrix, places, alpha, beta, k_evaporation, days):
                 minDist = curLength
                 bestWay = visited[ant]
 
-        pheromones = updatePheromones(matrix, places, visited, pheromones, q, k_evaporation)
+        pheromones = updPher(matrix, cities, visited, pheromones, q, k_evaporation)
 
     return minDist, bestWay
