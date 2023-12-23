@@ -3,8 +3,8 @@ project(lab_01_AA)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(HEADERS sort.hpp timings.h)
-set(SOURCES sort.cpp timings.cpp)
+set(HEADERS conveyor.hpp timings.h sorts.h atomic_queue.h)
+set(SOURCES conveyor.cpp timings.cpp sorts.cpp)
 
 
 ADD_LIBRARY(src ${HEADERS} ${SOURCES})
