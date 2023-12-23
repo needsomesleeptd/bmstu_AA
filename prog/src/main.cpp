@@ -12,71 +12,30 @@ std::string menu = "Меню:\n"
 
 int main()
 {
+	std::size_t matrix_size = 0;
+	std::vector<std::vector<float>> u, v;
+	std::vector<std::vector<float>> matrix, s;
+	std::cout << "Singular Value Decomposition (SVD):\n\n";
 
-	int request = -1;
-	while (request != 0)
+	std::cout << "Enter size of matrix N = (50x50 max): "; std::cin >> matrix_size;
+
+	if (matrix_size <= 50)
 	{
-		std::cout << menu << "\n";
-		std::cout << "Введите пункт из меню: ";
-		std::cin >> request;
-		std::cout << "\n";
-		if (request == 0)
-			break;
-		if (1 <= request && request <= 3)
-		{
-			int n = -1;
-			while (n <= 0)
-			{
-				std::cout << "Введите  размер массива для сортировки:\n";
-				std::cin >> n;
-				if (n <= 0)
-					std::cout << "Введенная размерность массива невалидна\n";
+		generate_matrix(matrix, matrix_size, matrix_size);
 
+		std::cout << "\nA = \n"; print_matrix(matrix);
 
-			}
-			std:: cout << "Введите массив для сортировки:\n";
-			std::vector<int> vec(n);
-			for (int i = 0; i < n; i++)
-			{
-				std::cin >> vec[i];
-			}
+		svd(matrix, s, u, v);
 
-			switch (request)
-			{
-			case 1:
-				shakerSort(vec);
-				break;
-			case 2:
-				radixSort(vec);
-				break;
-			case 3:
-				int k = -1 ;
-				while (k <= 0)
-				{
-					std::cout << "Введите количество блоков в сортировке\n";
-					std::cin >> k;
-					if (k <= 0)
-						std::cout<< "Введенное значение количества блоков невалидно, попробуйте еще раз.\n";
-				}
-				blockSort(vec, k);
-				break;
-			}
-			std::cout << "Отсортированный массив\n";
-			for (size_t i = 0; i < vec.size(); i++)
-				std::cout << vec[i] << " ";
-			std::cout << '\n';
-		}
-		else
-		{
-			int start, stop, step;
-			int count;
-			std::cout
-				<< "Введите начальный размер массива, конечный размер и шаг изменения размера массива\n";
-			std::cin >> start >> stop >> step;
-			std::cout << "Введите количество повторений сортировки: ";
-			std::cin >> count;
-			getTimeResults(start, stop, step, count);
-		}
+		std::cout << "\nS = \n"; print_matrix(s);
+		std::cout << "\nU = \n"; print_matrix(u);
+		std::cout << "\nV = \n"; print_matrix(v);
 	}
+
+	else std::cout << "Wrong matrix size... (matrix decomposition recommended)";
+
+	std::cin.get();
+	std::cin.get();
+
 	return 0;
 }

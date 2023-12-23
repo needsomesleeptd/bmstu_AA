@@ -42,19 +42,19 @@ double getCPUTimeRadix(std::vector<int>& vec)
 	long endTime;
 	//double overallTime;
 	startTime = getCpuTime();
-	radixSort(vec);
+	//radixSort(vec);
 	endTime = getCpuTime();
 	return (endTime - startTime) / TIMEDIVISION;
 }
 
 double getCPUTimeBlock(std::vector<int>& vec)
 {
-	int k = vec.size() / 2 + 2;
+	//int k = vec.size() / 2 + 2;
 	long startTime;
 	long endTime;
 	//double overallTime;
 	startTime = getCpuTime();
-	blockSort(vec, k);
+	//blockSort(vec, k);
 	endTime = getCpuTime();
 	return (endTime - startTime) / TIMEDIVISION;
 }
@@ -65,7 +65,7 @@ double getCPUTimeShaker(std::vector<int>& vec)
 	long endTime;
 	//double overallTime;
 	startTime = getCpuTime();
-	shakerSort(vec);
+	//shakerSort(vec);
 	endTime = getCpuTime();
 	return (endTime - startTime) / TIMEDIVISION;
 }
