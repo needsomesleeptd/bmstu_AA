@@ -5,34 +5,17 @@
 
 #include <vector>
 #include <iostream>
-#include <iomanip>
+
 #include <ctime>
 #include <algorithm>
 
-#include <valarray>
-
-#include <random>
-#include <iostream>
 #include <fstream>
 
-#include "atomic_queue.h"
 
 
-std::vector<int> generateVector(const size_t len)
-{
-	srand(time(NULL));
-	std::vector<int> vec(len);
 
-	std::random_device dev;
-	std::mt19937 rng(dev());
-	std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1e7);
-	for (size_t i = 0; i < len; i++)
-		vec[i] = dist(rng);
 
-	return vec;
-}
-
-void handle_first(std::queue<Request>& from, std::queue<Request>& to)
+void handle_first(AtomicQueue<Request>& from, AtomicQueue<Request>& to)
 {
 	timespec start, end;
 	Request curRequest = from.front();
@@ -41,12 +24,21 @@ void handle_first(std::queue<Request>& from, std::queue<Request>& to)
 	start = getTime();
 	mergeSort(copy, 0, copy.size() - 1);
 	end = getTime();
+	char buff[100];
+	strftime(buff, sizeof buff, "%D %T", gmtime(&start.tv_sec));
+	printf("Start time: %s.%09ld UTC\n", buff, start.tv_nsec);
+
+	strftime(buff, sizeof buff, "%D %T", gmtime(&start.tv_sec));
+	printf("end time: %s.%09ld UTC\n", buff, start.tv_nsec);
+
+
+	//std::cout << start << " " << end << std::endl;
 	curRequest.time_start_1 = start;
 	curRequest.time_end_1 = end;
 	to.push(curRequest);
 }
 
-void handle_secound(std::queue<Request>& from, std::queue<Request>& to)
+void handle_second(AtomicQueue<Request>& from, AtomicQueue<Request>& to)
 {
 	timespec start, end;
 	Request curRequest = from.front();
@@ -69,7 +61,7 @@ void write_into_file(Request& req, const std::string& folderName = "out/")
 
 }
 
-void handle_third(std::queue<Request>& from, std::queue<Request>& endQ)
+void handle_third(AtomicQueue<Request>& from, AtomicQueue<Request>& endQ)
 {
 	timespec start, end;
 	Request curRequest = from.front();
@@ -79,12 +71,12 @@ void handle_third(std::queue<Request>& from, std::queue<Request>& endQ)
 
 }
 
-int start_conveyor(std::queue<Request>& start, std::vector<Request>& end)
+void StartConveyor(AtomicQueue<Request>& start, AtomicQueue<Request>& end)
 {
-	std::queue<Request> secondQ;
-	std::queue<Request> thirdQ;
+	AtomicQueue<Request> secondQ;
+	AtomicQueue<Request> thirdQ;
 	handle_first(start,secondQ);
-	handle_secound(secondQ,thirdQ);
+	handle_second(secondQ, thirdQ);
 	handle_third(thirdQ, end);
 }
 
@@ -96,10 +88,7 @@ timespec getTime()
 	return start; // in Millisecounds
 }
 
-void handle_secound(std::queue<Request>& requests)
-{
 
-}
 
 
 

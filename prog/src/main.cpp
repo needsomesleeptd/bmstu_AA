@@ -3,7 +3,7 @@
 #include "conveyor.hpp"
 #include <locale>
 #include "timings.h"
-#include <queue>
+#include "atomic_queue.h"
 std::string menu = "Меню:\n"
                    "0)Выход\n"
                    "1)Сортировка массива с использованием сортировки перемешивания\n"
@@ -13,7 +13,9 @@ std::string menu = "Меню:\n"
 
 int main()
 {
-	std::queue<int> firstQ;
-	std::queue<int> secondQ;
+	AtomicQueue<Request> start;
+	AtomicQueue<Request> end;
+	StartConveyor(start,end);
+
 
 }

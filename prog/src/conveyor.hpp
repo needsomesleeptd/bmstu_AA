@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include "atomic_queue.h"
 
 struct Request
 {
@@ -13,3 +14,4 @@ struct Request
 };
 
 timespec getTime();
+void StartConveyor(AtomicQueue<Request>& start, AtomicQueue<Request>& end);
