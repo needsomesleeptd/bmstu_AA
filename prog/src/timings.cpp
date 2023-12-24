@@ -1,8 +1,8 @@
 //
 // Created by Андрей on 10/09/2023.
 //
-#include "conveyor.hpp"
 
+#include "conveyor.hpp"
 #include <random>
 #include <iostream>
 
@@ -94,13 +94,31 @@ void getTimeResultsMatrix(size_t wordsLen, int countProcessed, std::vector<int>&
 	std::cout << std::flush;
 }
 
-void getTimeResults(size_t wordLenStart, size_t wordLenStop, size_t wordLenStep, int countProcessed)
+
+
+
+
+void getTimeResults(int arrayStart, int arrayEnd, int arrayStep, int reqStart, int reqEnd, int reqStep)
 {
-	printf("\n\n|   n   ||   Поразраядная(mcs)    ||   Блочная(mcs)    ||  Перемешиванием(mcs)   |\n");
-	std::vector<int> res = generateVector(wordLenStop);
-	for (size_t i = wordLenStart; i < wordLenStop; i += wordLenStep)
+	std::cout << "req | n | Linear | Async|";
+	for (int i = arrayStart; i < arrayEnd; i += arrayStep)
 	{
-		getTimeResultsMatrix(i, countProcessed, res);
+		for (int j = reqStart; j < reqEnd; j += reqStep)
+		{
+			std::queue<Request> ref;
+			std::queue<Request> eL;
+			std::queue<Request> eA;
+			fillQueue(ref, j, i);
+			std::queue<Request> stL = ref;
+			std::queue<Request> stA = ref;
+			Linear(stL, eL);
+			StartConveyorAsync(stA, eA);
+			double LinearTime = getTimeQ(eL);
+			double AsyncTime = getTimeQ(eA);
+			std::cout << j << "|" << i << "|" << LinearTime << "|" << AsyncTime << "|" << std::endl;
+
+		}
 	}
+
 }
 

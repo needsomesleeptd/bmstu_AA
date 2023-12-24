@@ -2,7 +2,7 @@
 #include <string>
 #include "atomic_queue.h"
 #include "sorts.h"
-#include "timings.h"
+//#include "timings.h"
 
 const int maxQueues  = 3;
 const double MIL = 1e6;
@@ -19,11 +19,13 @@ struct Request
 
 };
 
-
+double getTimeQ(std::queue<Request> st);
 void createReport( std::queue<Request>& requests);
 timespec getTime();
 void StartConveyorAsync(std::queue<Request>& start, std::queue<Request>& end);
 void StartConveyorLinear(std::queue<Request>& start, std::queue<Request>& end);
 void Linear(std::queue<Request>& startQ, std::queue<Request>& endQ);
-void write_into_file(Request& req, const std::string& folderName = "../out/");
+void dumpInFile(Request& req, const std::string& folderName = "../out/");
 void createReport(Request& req);
+void fillQueue(std::queue<Request> &q, int req, int n);
+double diff_timespec(const timespec& time1, const timespec& time0);
