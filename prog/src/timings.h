@@ -7,5 +7,5 @@
 void getTimeResultsWord(size_t wordsLen,int countProcessed);
 void getTimeResults(size_t wordLenStart,size_t wordLenStop,size_t wordLenStep,int countProcessed);
 void getMemResults(size_t wordLenStart,size_t wordLenStop,size_t wordLenStep,int countProcessed);
-
+std::vector<int> generateVector(const size_t len);
 #endif //LAB_01_AA_BMSTU_AA_PROG_SRC_TIMINGS_H_
