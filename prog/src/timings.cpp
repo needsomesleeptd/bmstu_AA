@@ -100,7 +100,7 @@ void getTimeResultsMatrix(size_t wordsLen, int countProcessed, std::vector<int>&
 
 void getTimeResults(int arrayStart, int arrayEnd, int arrayStep, int reqStart, int reqEnd, int reqStep)
 {
-	std::cout << "req | n | Linear | Async|";
+	std::cout << "req | n | Linear | Async|\n";
 	for (int i = arrayStart; i < arrayEnd; i += arrayStep)
 	{
 		for (int j = reqStart; j < reqEnd; j += reqStep)
