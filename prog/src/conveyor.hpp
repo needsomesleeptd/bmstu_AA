@@ -5,6 +5,7 @@
 #include "timings.h"
 
 const int maxQueues  = 3;
+const double MIL = 1e6;
 
 struct Request
 {
@@ -19,7 +20,10 @@ struct Request
 };
 
 
-
+void createReport( std::queue<Request>& requests);
 timespec getTime();
-void StartConveyor(AtomicQueue<Request>& start, AtomicQueue<Request>& end);
+void StartConveyorAsync(std::queue<Request>& start, std::queue<Request>& end);
+void StartConveyorLinear(std::queue<Request>& start, std::queue<Request>& end);
+void Linear(std::queue<Request>& startQ, std::queue<Request>& endQ);
+void write_into_file(Request& req, const std::string& folderName = "../out/");
 void createReport(Request& req);
