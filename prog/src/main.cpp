@@ -15,17 +15,19 @@ int main()
 
 
 	int n1 = -1;
-	int m1 = -1;
-	while (n1 <= 0 || m1 <= 0)
+	while (n1 <= 0)
 	{
-		std::cout << "Введите n и m (высоту и ширину матрицы) ";
-		std::cin >> n1 >> m1;
-		if (n1 <= 0 || m1 <= 0)
+		std::cout << "Введите размерность квадартной матрицы:";
+		std::cin >> n1;
+		if (n1 <= 0)
 			std::cout << "Введенные параметры матрицы не валидны: \n";
 	}
-	std::vector<std::vector<float>> mat(n1, std::vector<float>(m1));
-
+	std::vector<std::vector<float>> mat(n1, std::vector<float>(n1));
+	std::cout << "Введите элементы матрицы:\n";
+	scanMatrix(mat);
+	//generate_matrix(mat,n1,n1);
 	std::vector<std::vector<float>> u, v, s;
+	//print_matrix(mat);
 	svd(mat, s, u, v);
 
 	std::cout << "\nS = \n";

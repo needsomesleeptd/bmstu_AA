@@ -4,7 +4,7 @@
 
 \section{Средства реализации}
 Алгоритмы для данной лабораторной работы были реализованы на языке C++, при использовании компилятора gcc версии 10.5.0, так как в стандартной библиотеке приведенного языка
-присутствует функция \texttt{clock\_gettime}, которая (при использовании макропеременной \texttt{CLOCK\_THREAD\_CPUTIME\_ID}) позволяет получить процессорное время~\cite{cpp-time}.
+присутствует класс \texttt{vector} упрощающий реализацию матриц~\cite{vector}.
 
 
 
@@ -14,36 +14,101 @@
 
 \section{Тестирование}
 
-В таблице \ref{t:mod_tests} приведены функциональные тесты для разработанных алгоритмов сортировки. Все тесты пройдены успешно.
+Функциональные  тесты рассмотрены в таблице~\ref{t:unit_tests_def}. Столбцы $A$,$S$,$V$,$D$ обозначают соответствующие матрицы в формуле сингулярного разложения, все тесты были пройдены успешно.
 \begin{table}[ht]
 	\small
 	\begin{center}
 		\begin{threeparttable}
-			\caption{Модульные тесты}
-			\label{t:mod_tests}
+			\caption{Функциональные тесты для сингулярного разложения матрицы}
+			\label{t:unit_tests_def}
 			\begin{tabular}{|c|c|c|c|c|}
 				\hline
-				\bfseries Массив
-				& \bfseries Размер
-				& \bfseries Ожидаемый р-т
-				& \multicolumn{2}{c|}{\bfseries Фактический результат} \\ \cline{4-5}
-				& & & \bfseries Блочная/Перемеш. & \bfseries Поразрядная \\
+				\bfseries A
+				& \bfseries S
+				& \bfseries V
+				& \bfseries D \\
 				\hline
-				1 2 3 4  & 4 & 1 2 3 4 & 1 2 3 4 & 1 2 3 4 \\
+				$\begin{pmatrix}
+				1.0
+				\end{pmatrix}$ 
+				&  
+				$\begin{pmatrix}
+				1.0
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					1.0
+				\end{pmatrix}$ 
+				&
+				$\begin{pmatrix}
+				1.0
+				\end{pmatrix}$  \\ 
 				\hline
-				4 3 2 1 & 4 & 4 3 2 1 & 4 3 2 1 & 4 3 2 1 \\
+				$\begin{pmatrix}
+					1.0 & 2.0\\
+					3.0 & 4.0\\
+				\end{pmatrix}$ 
+				&  
+				$\begin{pmatrix}
+					5.4 & 0.0\\
+					0.0 & 4.0\\
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+				0.0 & 0.9 \\
+				0.9 & -0.4 \\
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+				0.5 & -0.8 \\
+				0.8 & 0.5 \\
+				\end{pmatrix}$ \\ 
 				\hline
-				3 5 1 6 & 4 & 1 3 5 6  & 1 3 5 6 & 1 3 5 6 \\
+				$\begin{pmatrix}
+				-1.0 &2.0 &3.0 \\
+				-4.0& 5.0 &6.0 \\ 
+				7.0 &8.0& 9.0 \\
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+				15.2 & 0.0 & 0.0 \\
+				0.0 & 7.1 & 0.0 \\
+				0.0 &  0.0 & 0.3 \\
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+				0.2 & 0.2 & 0.9 \\
+				0.4 & 0.8 & -0.3 \\
+				0.8 & -0.4 & -0.1 \\
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					0.2 & -0.9 &0.1 \\
+					0.6& 0.1 &-0.7 \\
+					0.7 &0.2 &0.6 \\
+				\end{pmatrix}$ \\
 				\hline
-				-5 -1 -3 -4 -2 & 5 & -5 -4 -3 -2 -1 & -5 -4 -3 -2 -1 & -5 -4 -3 -2 -1 \\
+				$\begin{pmatrix}
+					-1.0
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					1.0
+				\end{pmatrix}$
+				&
+				$\begin{pmatrix}
+					-1.0
+				\end{pmatrix}$ 
+				&
+				$\begin{pmatrix}
+					1.0
+				\end{pmatrix}$ \\ 
 				\hline
-				1 -3 2 9 -9 & 5 & -9 -3 1 2 9  & -9 -3 1 2 91 & -9 -3 1 2 9 \\
-				\hline
-			\end{tabular}	
-		\end{threeparttable}	
+			\end{tabular}
+		\end{threeparttable}
 	\end{center}
 \end{table}
 
-\textbf{Вывод}
+\section*{Вывод}
 
 В данной части работы были представлены листинги реализованных алгоритмов и тесты, успешно пройденные программой.
