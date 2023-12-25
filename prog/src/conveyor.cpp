@@ -174,7 +174,6 @@ void StartConveyorAsync(std::queue<Request>& start, std::queue<Request>& end)
 	t1.join();
 	t2.join();
 	t3.join();
-	//createReport(end);
 }
 
 timespec getTime()

@@ -21,6 +21,4 @@ void Linear(std::queue<Request>& startQ, std::queue<Request>& endQ)
 		write_into_file(curRequest);
 		endQ.push(curRequest);
 	}
-	createReport(endQ);
-
 }
