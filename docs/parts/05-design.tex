@@ -6,189 +6,257 @@
 
 
 \section{Схемы алгоритмов}
-На рисунках \ref{img:koktail}--\ref{img:radix} приведены схемы алгоритмов сортировки перемешиванием, блочной и поразрядной сортировки соответственно.
+На рисунке \ref{img:svd} приведены схемы алгоритма сингулярного разложения.
 
 \includeimage
-{koktail} % Имя файла без расширения (файл должен быть расположен в директории inc/img/)
+{svd} % Имя файла без расширения (файл должен быть расположен в директории inc/img/)
 {f} % Обтекание (без обтекания)
 {h} % Положение рисунка (см. figure из пакета float)
-{1\textwidth} % Ширина рисунка
-{Схема алгоритма сортировки перемешиванием} % Подпись рисунка
-
-
-
-\includeimage
-{block} % Имя файла без расширения (файл должен быть расположен в директории inc/img/)
-{f} % Обтекание (без обтекания)
-{h} % Положение рисунка (см. figure из пакета float)
-{1\textwidth} % Ширина рисунка
-{Схема алгоритма блочной сортировки} % Подпись рисунка
-
-
-\includeimage
-{radix} % Имя файла без расширения (файл должен быть расположен в директории inc/img/)
-{f} % Обтекание (без обтекания)
-{h} % Положение рисунка (см. figure из пакета float)
-{1\textwidth} % Ширина рисунка
-{Схема алгоритма поразрядной сортировки} % Подпись рисунка
+{0.8\textwidth} % Ширина рисунка
+{Схема алгоритма сингулярного разложения} % Подпись рисунка
 
 
 
 
-\section{Оценка трудоемкости реализаций алгоритмов}
-Для последующего вычисления трудоемкости необходимо ввести модель вычислений.
-
-\begin{enumerate}
-	
-	\item Трудоемкость следующих базовых операций единична:
-	+, -, =, +=, -=, ==, !=, <, >, <=, >=, [], ++, --, <<, >>.
-	
-	Операции *, \%, / имеют трудоемкость 2.
-	
-	\item Трудоемкость цикла \texttt{for(k = 0; k < N; k++)}  рассчитывается по формуле (\ref{for:for}).
-	\begin{equation}
-		\label{for:for}
-		f_{for} = f_{\text{инициал.}} + f_{\text{сравн.}} + N(f_{\text{тела}} + f_{\text{инкр.}} + f_{\text{сравн.}}).
-	\end{equation}
-	
-	\item Трудоемкость передачи параметра в функции и возврат из функции равны 0.
-	\item Трудоемкость условного оператора \texttt{if (условие) then A else B} рассчитывается по формуле (\ref{for:if}), в данном случае л.с. обозначает лучший случай, х.с. - худший случай.
-	
-	\begin{equation}
-		\label{for:if}
-		f_{if} = f_{\text{условия}} +
-		\begin{cases}
-			min(f_A, f_B), & \text{л.с.}\\
-			max(f_A, f_B), & \text{х.с.}
-		\end{cases}
-	\end{equation}
-	
-\end{enumerate}
 
 
-В приведенных ниже сортировках $n$ обозначает число элементов в последовательности.
-\subsection{Трудоемкость реализации сортировки перемешиванием}
-В данном случаях считается, что трудоемкость обмена элементов местами равна 5.
+\section{Оценка трудоемкости реализации сингулярного разложения}
+\subsection{Расчет транспонированной матрицы}
+Матрица размерами $N \times M$.
 
-\textbf{Лучший случай:} последовательность уже отсортирована, ни одного захода в тело условного оператора не произошло, расчет трудоемкости данного случая приведен в формуле (\ref{сomplexity:shaker_best}).
 \begin{equation}
-	\label{сomplexity:shaker_best}
+	f_{matrix\_transpose} = f_{resize} + f_{outer\_for}.
+\end{equation}
+
+\begin{equation}
+	f_{outer\_for} = 3 + N \cdot (f_{resize} + 3 + M \cdot 5)).
+\end{equation}
+
+Тогда:
+\begin{equation}
 	\begin{gathered}
-		f_{best} =\sum_{i=0}^{n}  (3 +  1 + 1 + i \cdot (1 +4  + 1) + 1 +1 +1 +1) =\\ =\sum_{i=0}^{n} (9 + 6 \cdot i) = \\
-		= 15 \cdot n + \frac{n^2}{2} - \frac{n}{2}  = O(n^2).
+		f_{matrix\_transpose} = f_{resize} + 3 + N \cdot (f_{resize} + 3 + 5M) = f_{resize} + 3N \cdot f_{resize} + \\ + 9N + 15MN= f_{resize} \cdot (3N + 1) + 9N + 15MN.
 	\end{gathered}
 \end{equation}
 
-\textbf{Худший случай:} последовательность отсортирована в обратном порядке (необходимо каждый раз заходить в тело условного оператора), приведен в формуле (\ref{сomplexity:shaker_worst}).
+\subsection{Расчет произведения матриц}
+
+Матрицы размерами $N \times M$ и $M \times K$.
 
 \begin{equation}
-	\label{сomplexity:shaker_worst}
+	f_{matrix\_by\_matrix} = f_{resize} + f_{1\_outer\_for}.
+\end{equation}
+
+\begin{equation}
+	f_{1\_outer\_for} = 3 + N \cdot (f_{resize} + f_{2\_outer\_for}).
+\end{equation}
+
+\begin{equation}
+	f_{2\_outer\_for} = 3 + M \cdot (3 +  f_{inner\_for}).
+\end{equation}
+
+\begin{equation}
+	f_{inner\_for} = 3 + M \cdot (2 + 1 + 2 + 2  + 2) = 3 + 9M.
+\end{equation}
+
+Тогда:
+
+\begin{equation}
 	\begin{gathered}
-		f_{worst} = \sum_{i=0}^{n}  (3 +  1 + 1 + i \cdot (1 +4  + 1 + 5) + 1 +1 +1 +1 = \\ = \sum_{i=0}^{n} 9 + 11 \cdot i = \\
-		= 20 \cdot n + \frac{n^2}{2} - \frac{n}{2} = O(n^2).
+		f_{matrix\_by\_matrix} = f_{resize} + f_{1\_outer\_for} =
+		f_{resize} + 3 \cdot \\ \cdot N (f_{resize} + 3 + M \cdot (3 + 3 + 9M)) = f_{resize} + 3 \cdot N (f_{resize} + 3 + \\ + 6M + 9M^2) = f_{resize} + 3N \cdot f_{resize} + 9N + 18NM + 27NM^2 = \\ = f_{resize} \cdot (3N + 1) + 9N + 18NM + 27NM^2.
+	\end{gathered}
+\end{equation}
+
+\section{Получение эрмитовой матрицы}
+
+Размер вектора равен $N$;
+
+\begin{equation}
+	f_{get\_hermitian\_matrix} = f_{resize} + f_{for\_1} + (2 + 1 + 2 + 1) + f_{for\_2} + f_{for\_3}.
+\end{equation}
+
+\begin{equation}
+	f_{for\_1} = 3 + N \cdot (1 + f_{resize}) = 3 + N + N \cdot f_{resize}.
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{for\_2} = 3 + (N - 1) \cdot (2 + 1 + 1 + 2 + 1) = 3 + (N - 1) \cdot 7 =\\=3 + 7N - 7 = 7N - 4.
+	\end{gathered}
+\end{equation}
+
+\begin{equation}
+	f_{for\_3} = 3 + N \cdot (2 + 1) = 3 + 3N.
+\end{equation}
+
+Тогда:
+
+\begin{equation}
+	\begin{gathered}
+		f_{get\_hermitian\_matrix} = f_{resize} + f_{for\_1} + (2 + 1 + 2 + 1) +\\+ f_{for\_2} + f_{for\_3} =\\=f_{resize} + 3 + N + N \cdot f_{resize} + 6 + 7N - 4 + 3 + 3N =\\=
+		f_{resize} \cdot (1 + N) + 8 + 11N.
+	\end{gathered}
+\end{equation}
+
+\section{Получение обратной эрмитовой матрицы}
+
+Имеет аналогичную трудоемкость, что и $get\_hermitian\_matrix$ в силу смены порядка операций.
+
+\section{Решение системы с помощью метода Гаусса-Жордана}
+
+Размер матрицы $N \times M$, размер вектора $K$.
+
+\begin{equation}
+	f_{jordan\_gaussian\_transform} = f_{for} + f_{while} + 3.
+\end{equation}
+
+\begin{equation}
+	f_{for} = 3 + (N - 1) \cdot (6 + f_{inner\_for\_1} + f_{inner\_for\_2}).
+\end{equation}
+
+\begin{equation}
+	f_{inner\_for\_1} = 3 + M \cdot (2 + 2 + 2 + f_{swap}) = 3 + 6M + M \cdot f_{swap}.
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{inner\_for\_2} = 3 + N \cdot (1 + 2 + 3 + M \cdot (2 + 2 + 1 + 2 + 1 + 2 + 2)) =\\=
+		3 + N \cdot (6 + 12M) = 3 + 6N + 12NM.
+	\end{gathered}
+\end{equation}
+
+\begin{equation}
+	f_{while} = N \cdot (2 + 1 + 2 + 1) = 6N.
+\end{equation}
+
+Тогда:
+
+\begin{equation}
+	\begin{gathered}
+		f_{jordan\_gaussian\_transform} = 3 + (N - 1) \cdot (6 + 3 + 6M + M \cdot f_{swap} +\\+ 3 + 6N+ 12NM)  + 6N + 3 = 6 + 6N + (N - 1) \cdot (12 + 6M +\\+ M \cdot f_{swap} + 6N + 12NM) = 6 + 6N + 12N - 12 + 6NM - 6M +\\+ M \cdot f_{swap} \cdot (N - 1) + 6N^2 - 6N + 12N^2M - 12NM =\\= -6 + 12N - 6M - 6NM + 6N^2 + 12N^2M + M \cdot f_{swap} \cdot (N - 1).
+	\end{gathered}
+\end{equation}
+
+\section{Получение обратной диагональной матрицы}
+
+Размер матрицы $N \times M$.
+
+\begin{equation}
+	\begin{gathered}
+		f_{get\_inverse\_diagonal\_matrix} =\\= f_{resize} + 3 + N \cdot (2 + f_{resize} + 2 + 1 + 1 + 2) =\\= f_{resize} + 3 + N \cdot (8 + f_{resize}) =\\
+		=f_{resize} \cdot (1 + N) + 3 + 8N.
+	\end{gathered}
+\end{equation}
+
+\section{Получение матриц меньшей размерности}
+
+Размер матрицы $N \times M$.
+
+\begin{equation}
+	f_{get\_reduced\_matrix\_best} = 1 + 2 \cdot f_{resize} + 1 + 2 + 1 + 2 = 7 + 2 \cdot f_{resize}.
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{get\_reduced\_matrix\_worst} = 1 + f_{resize} + 2 + 2 + N \cdot (1 + f_{resize} + 2 +\\+ M \cdot (2 + 1 + 1 + 2 + 1)) = 1 + f_{resize} + 4 + N \cdot (3 + f_{resize} +\\+ 7M) =
+		5 + f_{resize} + 3N + N \cdot f_{resize}. + 7NM = f_{resize} \cdot (1 + N) + 5 +\\+ 3N + 7NM.
 	\end{gathered}
 \end{equation}
 
 
-\textbf{Вывод о  трудоемкости сортировки перемешиванием}
 
-В соответствии с выражениями (\ref{сomplexity:shaker_worst}, \ref{сomplexity:shaker_best}), различие в трудоемкости лучшего и худшего случая проявляется в необходимости обмена элементов местами в худшем случае.
+\section{Получение сингулярных чисел и векторов}
 
-
-
-\subsection{Трудоемкость реализации блочной сортировки}
-В данной реализации размер блока обозначается как $k$, трудоемкость операции добавления и удаления элемента из вектора равна 2.
-
-
-\textbf{Лучший случай:} массив отсортирован, элементы распределены равномерно (все блоки содержат одинаковое число элементов), расчет трудоемкости данного случая приведен в (\ref{сomplexity:block_best}).
-
+Размер матрицы $N \times M$, размер вектора $K$.
 
 \begin{equation}
-	\label{сomplexity:block_best}
 	\begin{gathered}
-		f_{best} = 1 +1 + \frac{n}{k} \cdot(1 + 2+f_{shaker} + 2 + 1 + 4 + \\
-		+ k \cdot (3 + 1 + 4)) + 1 + 1 + \\
-		+ \frac{n}{k} \cdot (1 + 4 + 1 + 1 + 5 + 1 + 4 + 1 + 1 + n \cdot (5)) = \\
-		= 4 + \frac{29\cdot n + n \cdot f_{shaker} + 5 \cdot n^2}{k}  + 8 \cdot n  = \\
-		= 4 + 8 \cdot n + 29 \cdot \frac{n}{k} + n \cdot (14.5 + \frac{k}{2}) + \frac{5 \cdot n^2}{k}.
+		f_{compute\_evd} = f_{first\_if} + 3 + N + 1 + 2 + J \cdot (11 + N + N \cdot (3 + 2 +\\+ N \cdot 8) + 2 + N \cdot 4 + 1 + f_{sec\_if} + 1) + f_{third\_if} + f_{fourth\_if} =\\=
+		f_{first_if} + 6 + N + J \cdot (11 + N + N \cdot (5 + 8N) + 4 + 4N) + f_{third\_if} +\\+ f_{fourth\_if}.
+	\end{gathered}
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{first\_if\_best} = 2;\\
+		f_{first\_if\_worst} = 2 + 1 = 3.
+	\end{gathered}
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{sec\_if\_best} = 1;\\
+		f_{sec\_if\_worst} = 1 + 8 + 4 = 13.
+	\end{gathered}
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{third\_if\_best} = 1;\\
+		f_{third\_if\_worst} = 1 + 2 + N \cdot (1 + 2 + 8M) +\\+ f_{jordan\_gaussian\_transform} + f_{get\_hermitian\_matrix} +\\+ 2 \cdot f_{matrix\_by\_matrix} + f_{get\_hermitian\_matrix\_inverse} +\\+ f_{get\_reduced\_matrix} = 3 + 3N + 8NM -6 + 12N - 6M - 6NM +\\+ 6N^2 + 12N^2M + M \cdot f_{swap} \cdot (N - 1) + f_{resize} \cdot (1 + N) + 8 + 11N +\\+ 2 \cdot f_{resize} * (3N + 1) + 18N + 36NM + 54NM^2 +\\+ f_{resize} \cdot (1 + N) + 8 + 11N + f_{resize} \cdot (1 + N) + 5 + 3N + 7NM =\\= 18 + 58N - 6M + 45NM + 6N^2 + 12N^2M + 54NM^2 +\\+ M \cdot f_{swap} \cdot (N - 1) + f_{resize} \cdot (9N + 5).
+	\end{gathered}
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{fourth\_if\_best} = 1;\\
+		f_{fourth\_if\_worst} = 2 + K \cdot (4 + N \cdot (3 + 6N) +\\+ f_{jordan\_gaussian\_transform} + 9 + 7N) = 2 + K \cdot (13 + 10N + 6N^2 -\\- 6 + 12N - 6M - 6NM + 6N^2 + 12N^2M + M \cdot f_{swap} \cdot (N - 1)) =\\= 2 + K (7 + 22N - 6M - 6NM + 12N^2 + 12N^2M + M \cdot f_{swap} \cdot\\\cdot (N-1)) = 2 + 7K + 22KN - 6KM - 6KNM =12KN^2 +\\+ 12KN^2M + KM \cdot f_{swap} \cdot (N - 1).
+	\end{gathered}
+\end{equation}
+
+Т.~о. в худшем и лучшем случаях имеем:
+
+\begin{equation}
+	\begin{gathered}
+		f_{compute\_evd\_best} = f_{first\_if} + 6 + N + J \cdot (11 + N + N \cdot (5 + 8N) + \\
+		+ 4 + 4N + f_{sec\_if}) + f_{third\_if} +\\+ f_{fourth\_if} = 2 + 6 + N + J \cdot (15 + 10N + 8N^2 + 1) + 1 + 1 = \\
+		= 10 + N + 16J + 10JN + 8JN^2.
+	\end{gathered}
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{compute\_evd\_worst} = f_{first\_if} + 6 + N + J \cdot (11 + N + N \cdot (5 + 8N) +\\+ 4 + 4N + f_{sec\_if}) + f_{third\_if} + f_{fourth\_if} = 
+		3 + 6 + N + J \cdot (15 +\\+ 10N + 8N^2 + 13) + 18 + 58N - 6M + 45NM + 6N^2 + 12N^2M +\\+ 54NM^2 + M \cdot f_{swap} \cdot (N - 1) + f_{resize} \cdot (9N + 5)  + 12KN^2 +\\+ 12KN^2M + KM \cdot f_{swap} \cdot (N - 1) = 27 + 59N -6M +\\+ 12KN^2M + KM \cdot f_{swap} \cdot (N - 1) + 45NM + 54NM^2 + 12KN^2 +\\+
+		f_{resize} \cdot (9N + 5).
+	\end{gathered}
+\end{equation}
+
+\section{Сингулярное разложение}
+
+Размер матрицы $N \times M$, размер вектора $K$.
+
+\begin{equation}
+	\begin{gathered}
+		f_{svd} = 2 \cdot f_{matrix\_transpose} + 4 \cdot f_{matrix\_by\_matrix} +\\+ 
+		f_{compute\_evd} + 2 + 5K + f_{get\_inverse\_diagonal\_matrix}.
+	\end{gathered}
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{svd\_best} = 2 \cdot f_{resize} \cdot (3N + 1) + 18N + 30MN + 4 \cdot  f_{resize} \cdot\\\cdot (3N + 1) + 36N + 72NM + 108NM^2 + 
+		10 + N +\\+ 16J + 10JN + 8JN^2 + 2 + 5K + f_{resize} \cdot (1 + N) + 3 + 8N =\\=
+		15 + 63N + 102NM + 16J + 10JN + 8JN^2 + 5K +\\+ f_{resize} \cdot (7 + 19N).
+	\end{gathered}
+\end{equation}
+
+\begin{equation}
+	\begin{gathered}
+		f_{svd\_worst} = 2 \cdot f_{resize} \cdot (3N + 1) + 18N + 30MN + 4 \cdot\\\cdot f_{resize} \cdot (3N + 1) + 36N + 72NM + 108NM^2 +\\+ 
+		27 + 59N -6M + 12KN^2M +\\+ KM \cdot f_{swap} \cdot (N - 1) + 45NM + 54NM^2 + 12KN^2 +\\+
+		f_{resize} \cdot (9N + 5) + 2 + 5K + f_{resize} \cdot (1 + N) + 3 +\\+ 8N = f_{resize} \cdot (7 + 19N) + 32 + 113N + 147NM + 162NM^2 +\\+ 12KN^2 + 5K + KM \cdot f_{swap} \cdot (N - 1) + 12KN^2M.
 	\end{gathered}
 \end{equation}
 
 
 
 
-\textbf{Худший случай:} большое количество пустых блоков, массив отсортирован в обратном порядке (худший случай сортировки перемешиванием, которая используется в блочной сортировке), расчет трудоемкости приведен в выражении (\ref{сomplexity:block_worst}).
 
-\begin{equation}
-	\label{сomplexity:block_worst}
-	\begin{gathered}
-		f_{worst} = 1 +1 + \frac{n}{k} \cdot(1 + 2+f_{shaker} + 2 + 1 + 4 + \\
-		+ k \cdot (3 + 1 + 4)) + 1 + 1 + \\
-		 + \frac{n}{k} \cdot (1 + 4 + 1 + 1 + 5 + 1 + 4 + 1 + 1 + k \cdot (6)) = \\
-		= 4 + \frac{29\cdot n + n \cdot f_{shaker} + 6 \cdot n^2}{k}  + 8 \cdot n  = \\
-		= 4 + 8 \cdot n + 29 \cdot \frac{n}{k} + n \cdot (19.5 + \frac{k}{2}) + \frac{6 \cdot n^2}{k}.
-	\end{gathered}
-\end{equation}
+\section*{Вывод}
 
-
-\textbf{Вывод о  трудоемкости блочной сортировки}
-
-Данная реализация зависит от выбранного размера блока, а также от количества сортируемых элементов. В соответствии с выражениями (\ref{сomplexity:block_worst} , \ref{сomplexity:block_best})  операнды $\frac{n \cdot k}{2}$, $\frac{n^2}{k}$ и $\frac{n}{k}$ зависят от значений $n$ и $k$, первый приведенный операнд возрастает при увеличении $k$, другие убывают.
-
-\subsection{Трудоемкость реализации сортировки разрядов подсчетом}
-
-Трудоемкость реализации разрядов подсчетом равна:
-\begin{equation}
-	\label{сomplexity:count_best_worst}
-	\begin{gathered}
-		f_{count} = 1 + 1 + 1 + n \cdot (2 + 7)	 + 1 + 1 + 20 \cdot (1 + 1 + 4) + \\
-		+ 2 + 1 + n \cdot (1 + 1 + 10 + 7) + 1 + 1 + n \cdot(1 +1 + 3) = \\
-		= 130 + 33 \cdot n.
-	\end{gathered}
-\end{equation}
-
-Данная сортировка используется при реализации поразрядной сортировки, и не содержит условных операторов, соответственно не имеет лучшего и худшего случая
-
-
-
-
-
-\subsection{Трудоемкость реализации поразрядной сортировки}
-В данном случае за $w$ принимается количество разрядов максимально большого по модулю числа.
-
-\textbf{Лучший случай:} наибольшее по модулю значение находится в начале массива, расчет трудоемкости данного случая приведен в (\ref{сomplexity:radix_best}).
-
-
-\begin{equation}
-	\label{сomplexity:radix_best}
-	\begin{gathered}
-		f_{best} = 1 + 1 + 1 + n \cdot (2 + 2) + 1 +3 + w \cdot (2 + 3 + f_{count}) = \\
-		= 7 + 4 \cdot n + 135 \cdot w + 33 \cdot n \cdot w = O(n \cdot w).
-	\end{gathered}
-\end{equation}
-
-
-\textbf{Худший случай:} изначально последовательность отсортирована по возрастанию модуля значений, расчет трудоемкости приведен в выражении (\ref{сomplexity:radix_worst}).
-
-\begin{equation}
-	\label{сomplexity:radix_worst}
-	\begin{gathered}
-		f_{best} = 1 + 1 + 1 + n \cdot (2 + 2 + 2) + 1 +3 + w \cdot (2 + 3 + f_{count}) = \\
-		= 7 + 6 \cdot n + 135 \cdot w + 33 \cdot n \cdot w = O(n \cdot w).
-	\end{gathered}
-\end{equation}
-
-\textbf{Вывод о  трудоемкости  реализации поразрядной сортировки}
-
-Выражения (\ref{сomplexity:radix_worst}, \ref{сomplexity:radix_best}), иллюстрируют зависимость данной реализации от количества сортируемых элементов и от максимального числа разрядов в наибольшем по модулю числе. Различия лучшего и худшего случаев состоит только в различном местоположении максимального по модулю числа для определения $w$.
-
-
-
-
-\textbf{Вывод}
-
-В данном разделе на основе теоретических данных были построены схемы
-требуемых алгоритмов, а также для каждого алгоритма сортировки были выведены трудоемкости худшего и лучшего случаев.
+В данном разделе была построена схема алгоритма расчета сингулярного разложения и была выведена трудоемкость для лучшего и худшего случаев сингулярного разложения.
 
 
 

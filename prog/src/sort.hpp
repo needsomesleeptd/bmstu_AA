@@ -34,6 +34,10 @@ void get_hermitian_matrix(std::vector<float> eigenvector,
 void svd(std::vector<std::vector<float>> matrix, std::vector<std::vector<float>>& s,
 	std::vector<std::vector<float>>& u, std::vector<std::vector<float>>& v);
 
+void matrix_transpose_faster(std::vector<std::vector<float>> matrix1,
+	std::vector<std::vector<float>>& matrix2);
+
+void scanMatrix(std::vector<std::vector<float>>& matrix);
 
 
 void generate_matrix(std::vector<std::vector<float>>&

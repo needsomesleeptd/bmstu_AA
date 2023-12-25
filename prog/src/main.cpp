@@ -12,30 +12,28 @@ std::string menu = "Меню:\n"
 
 int main()
 {
-	std::size_t matrix_size = 0;
-	std::vector<std::vector<float>> u, v;
-	std::vector<std::vector<float>> matrix, s;
-	std::cout << "Singular Value Decomposition (SVD):\n\n";
 
-	std::cout << "Enter size of matrix N = (50x50 max): "; std::cin >> matrix_size;
 
-	if (matrix_size <= 50)
+	int n1 = -1;
+	int m1 = -1;
+	while (n1 <= 0 || m1 <= 0)
 	{
-		generate_matrix(matrix, matrix_size, matrix_size);
-
-		std::cout << "\nA = \n"; print_matrix(matrix);
-
-		svd(matrix, s, u, v);
-
-		std::cout << "\nS = \n"; print_matrix(s);
-		std::cout << "\nU = \n"; print_matrix(u);
-		std::cout << "\nV = \n"; print_matrix(v);
+		std::cout << "Введите n и m (высоту и ширину матрицы) ";
+		std::cin >> n1 >> m1;
+		if (n1 <= 0 || m1 <= 0)
+			std::cout << "Введенные параметры матрицы не валидны: \n";
 	}
+	std::vector<std::vector<float>> mat(n1, std::vector<float>(m1));
 
-	else std::cout << "Wrong matrix size... (matrix decomposition recommended)";
+	std::vector<std::vector<float>> u, v, s;
+	svd(mat, s, u, v);
 
-	std::cin.get();
-	std::cin.get();
+	std::cout << "\nS = \n";
+	print_matrix(s);
+	std::cout << "\nU = \n";
+	print_matrix(u);
+	std::cout << "\nV = \n";
+	print_matrix(v);
 
 	return 0;
 }

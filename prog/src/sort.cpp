@@ -11,7 +11,17 @@
 #include <valarray>
 
 
-
+void scanMatrix(std::vector<std::vector<float>>& matrix)
+{
+	float val;
+	int m = matrix[0].size();
+	for (size_t i = 0; i < matrix.size(); i++)
+		for (size_t j = 0; j < m; j++)
+		{
+			std::cin >> val;
+			matrix[i][j] = val;
+		}
+}
 
 using namespace std;
 
@@ -34,6 +44,43 @@ void svd(std::vector<std::vector<float>> matrix, std::vector<std::vector<float>>
 	compute_evd(matrix_product2, eigenvalues, v_1, 0);
 
 	matrix_transpose(v_1, v);
+
+	s.resize(matrix.size());
+	for (std::size_t index = 0; index < eigenvalues.size(); index++)
+	{
+		s[index].resize(eigenvalues.size());
+		s[index][index] = eigenvalues[index];
+	}
+
+	std::vector<std::vector<float>> s_inverse;
+	get_inverse_diagonal_matrix(s, s_inverse);
+
+	std::vector<std::vector<float>> av_matrix;
+	matrix_by_matrix(matrix, v, av_matrix);
+	matrix_by_matrix(av_matrix, s_inverse, u);
+}
+
+
+
+void svd_opt(std::vector<std::vector<float>> matrix, std::vector<std::vector<float>>& s,
+	std::vector<std::vector<float>>& u, std::vector<std::vector<float>>& v)
+{
+	std::vector<std::vector<float>> matrix_t;
+	matrix_transpose_faster(matrix, matrix_t);
+
+	std::vector<std::vector<float>> matrix_product1;
+	matrix_by_matrix(matrix, matrix_t, matrix_product1);
+
+	std::vector<std::vector<float>> matrix_product2;
+	matrix_by_matrix(matrix_t, matrix, matrix_product2);
+
+	std::vector<std::vector<float>> u_1;
+	std::vector<std::vector<float>> v_1;
+
+	std::vector<float> eigenvalues;
+	compute_evd(matrix_product2, eigenvalues, v_1, 0);
+
+	matrix_transpose_faster(v_1, v);
 
 	s.resize(matrix.size());
 	for (std::size_t index = 0; index < eigenvalues.size(); index++)
@@ -95,7 +142,7 @@ void compute_evd(std::vector<std::vector<float>> matrix,
 		{
 			float lambda = ((index - 1) > 0) ? \
 				(m[0][index] / m[0][index - 1]) : m[0][index];
-			is_eval = (fabs(lambda - lambda_old) < /*10e-15*/10e-10);
+			is_eval = (fabs(lambda - lambda_old) < /*10e-15*/10e-7);
 
 			eigenvalues[eig_count] = lambda; lambda_old = lambda;
 		}
@@ -178,6 +225,8 @@ void matrix_transpose(std::vector<std::vector<float>> matrix1,
 	std::vector<std::vector<float>>& matrix2)
 {
 	matrix2.resize(matrix1.size());
+	//size_t n = matrix1.size();
+	//size_t m = matrix1[0].size();
 	for (std::size_t row = 0; row < matrix1.size(); row++)
 	{
 		matrix2[row].resize(matrix1[row].size());
@@ -185,6 +234,23 @@ void matrix_transpose(std::vector<std::vector<float>> matrix1,
 			matrix2[row][col] = matrix1[col][row];
 	}
 }
+
+
+
+void matrix_transpose_faster(std::vector<std::vector<float>> matrix1,
+	std::vector<std::vector<float>>& matrix2)
+{
+	matrix2.resize(matrix1.size());
+	size_t n = matrix1.size();
+	size_t m = matrix1[0].size();
+	for (std::size_t row = 0; row < n; row++)
+	{
+		matrix2[row].resize(matrix1[row].size());
+		for (std::size_t col = 0; col < m; col++)
+			matrix2[row][col] = matrix1[col][row];
+	}
+}
+
 
 
 void matrix_by_matrix(std::vector<std::vector<float>> matrix1,
